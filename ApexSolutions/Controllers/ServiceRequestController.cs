@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ApexSolutions.DTOs;
 using ApexSolutions.Services;
+using ApexCare.Services;
 
 namespace ApexCare.Controllers
 {
@@ -18,17 +19,17 @@ namespace ApexCare.Controllers
 
         // Get a list of all service requests (GET request)
         [HttpGet]
-        public IActionResult GetAllServiceRequests()
+        public async Task<IActionResult> GetAllServiceRequests()
         {
-            var serviceRequests = _serviceRequestService.GetAllServiceRequests();
+            var serviceRequests = await _serviceRequestService.GetAllServiceRequests();
             return Ok(serviceRequests);
         }
 
         // Get a specific service request by ID (GET request)
         [HttpGet("{id}")]
-        public IActionResult GetServiceRequestById(int id)
+        public async Task<IActionResult> GetServiceRequestById(int id)
         {
-            var serviceRequest = _serviceRequestService.GetServiceRequestById(id);
+            var serviceRequest = await _serviceRequestService.GetServiceRequestById(id);
             if (serviceRequest == null)
             {
                 return NotFound();  // Return 404 if the service request is not found
@@ -38,27 +39,27 @@ namespace ApexCare.Controllers
 
         // Create a new service request (POST request)
         [HttpPost]
-        public IActionResult CreateServiceRequest([FromBody] ServiceRequestDTO serviceRequestDto)
+        public async Task<IActionResult> CreateServiceRequest([FromBody] ServiceRequestDTO serviceRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);  // Return 400 if the data is invalid
             }
 
-            var createdServiceRequest = _serviceRequestService.CreateServiceRequest(serviceRequestDto);
-            return CreatedAtAction(nameof(GetServiceRequestById), new { id = createdServiceRequest.Id }, createdServiceRequest);
+            var createdServiceRequest = await _serviceRequestService.CreateServiceRequest(serviceRequestDto);
+            return CreatedAtAction(nameof(GetServiceRequestById), new { id = createdServiceRequest.RequestID }, createdServiceRequest);
         }
 
         // Update an existing service request (PUT request)
         [HttpPut("{id}")]
-        public IActionResult UpdateServiceRequest(int id, [FromBody] ServiceRequestDTO serviceRequestDto)
+        public async Task<IActionResult> UpdateServiceRequest(int id, [FromBody] ServiceRequestDTO serviceRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);  // Return 400 if the data is invalid
             }
 
-            var updatedRequest = _serviceRequestService.UpdateServiceRequest(id, serviceRequestDto);
+            var updatedRequest = await _serviceRequestService.UpdateServiceRequest(id, serviceRequestDto);
             if (updatedRequest == null)
             {
                 return NotFound();  // Return 404 if the service request doesn't exist
@@ -69,9 +70,9 @@ namespace ApexCare.Controllers
 
         // Delete a service request (DELETE request)
         [HttpDelete("{id}")]
-        public IActionResult DeleteServiceRequest(int id)
+        public async Task<IActionResult> DeleteServiceRequest(int id)
         {
-            var result = _serviceRequestService.DeleteServiceRequest(id);
+            var result = await _serviceRequestService.DeleteServiceRequest(id);
             if (!result)
             {
                 return NotFound();  // Return 404 if the service request is not found
