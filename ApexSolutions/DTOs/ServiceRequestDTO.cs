@@ -1,6 +1,6 @@
 ﻿namespace ApexSolutions.DTOs
 {
-    public class ServiceRequesDTO
+    public class ServiceRequestDTO
     {
     }
 }
