@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ApexCare.Data;
 using ApexCare.Interfaces;
 using ApexSolutions.Models;
+using ApexSolutions.Repositories;
 
 namespace ApexCare.Repositories
 {
-    public class ServiceRequestRepository : IRepository<ServiceRequest>
+    public class ServiceRequestRepository : IServiceRequestRepository // Implement IServiceRequestRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -18,7 +18,7 @@ namespace ApexCare.Repositories
         }
 
         // Create a new service request
-        public async Task<ServiceRequest> AddAsync(ServiceRequest serviceRequest)
+        async Task<ServiceRequest> IServiceRequestRepository.AddAsync(ServiceRequest serviceRequest)
         {
             _context.ServiceRequests.Add(serviceRequest);
             await _context.SaveChangesAsync();
@@ -26,29 +26,32 @@ namespace ApexCare.Repositories
         }
 
         // Get all service requests
-        public async Task<IEnumerable<ServiceRequest>> GetAllAsync()
+        async Task<List<ServiceRequest>> IServiceRequestRepository.GetAllAsync()
         {
             return await _context.ServiceRequests.ToListAsync();
         }
 
+
         // Get a service request by ID
-        public async Task<ServiceRequest> GetByIdAsync(int id)
+        async Task<ServiceRequest> IServiceRequestRepository.GetByIdAsync(int serviceRequestId) // Match method signature
         {
-            return await _context.ServiceRequests.FindAsync(id);
+            return await _context.ServiceRequests.FindAsync(serviceRequestId);
         }
 
         // Update an existing service request
-        public async Task<ServiceRequest> UpdateAsync(ServiceRequest serviceRequest)
+        async Task<ServiceRequest> IServiceRequestRepository.UpdateAsync(ServiceRequest serviceRequest)
         {
             _context.Entry(serviceRequest).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return serviceRequest;
         }
 
+
         // Delete a service request
-        public async Task<bool> DeleteAsync(int id)
+        async Task<bool> IServiceRequestRepository.DeleteAsync(int serviceRequestId)
         {
-            var serviceRequest = await GetByIdAsync(id);
+            // Call the interface implementation
+            var serviceRequest = await ((IServiceRequestRepository)this).GetByIdAsync(serviceRequestId);
             if (serviceRequest == null)
             {
                 return false;
@@ -58,5 +61,7 @@ namespace ApexCare.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+
     }
 }
