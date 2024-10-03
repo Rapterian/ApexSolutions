@@ -1,25 +1,58 @@
-﻿using ApexSolutions.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using ApexCare.Interfaces;
+using ApexSolutions.Models;
 
-namespace ApexSolutions.Services
+namespace ApexCare.Services
 {
-    public class FeedbackObserver : IObserver
+    public class FeedbackObserver : IObserver<Feedback>
     {
-        private readonly string _email;
+        private readonly List<IObserver<Feedback>> _observers;
+        private Feedback _latestFeedback;
 
-        public FeedbackObserver(string email)
+        public FeedbackObserver()
         {
-            _email = email;
+            _observers = new List<IObserver<Feedback>>();
         }
 
-        public void Update()
+        public void Subscribe(IObserver<Feedback> observer)
         {
-            SendFeedbackSurvey();
+            if (!_observers.Contains(observer))
+            {
+                _observers.Add(observer);
+            }
         }
 
-        private void SendFeedbackSurvey()
+        public void Unsubscribe(IObserver<Feedback> observer)
         {
-            // TODO - Logic for sending survey
-            Console.WriteLine($"Sending feedback survey to {_email}");
+            if (_observers.Contains(observer))
+            {
+                _observers.Remove(observer);
+            }
+        }
+
+        public void OnNext(Feedback feedback)
+        {
+            _latestFeedback = feedback;
+            NotifyObservers();
+        }
+
+        public void OnError(Exception error)
+        {
+            // Handle errors here if needed
+        }
+
+        public void OnCompleted()
+        {
+            // Handle completion if necessary
+        }
+
+        private void NotifyObservers()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.OnNext(_latestFeedback);
+            }
         }
     }
 }
