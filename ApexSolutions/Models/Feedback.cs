@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApexSolutions
+namespace ApexSolutions.Models
 {
     public class Feedback
     {
@@ -32,13 +32,13 @@ namespace ApexSolutions
             this.serviceRequestID = serviceRequestID;
             this.satisfactionRating = satisfactionRating;
             this.comments = comments;
-            this.feedbackDate = DateTime.Now;
+            feedbackDate = DateTime.Now;
         }
 
         // Methods
         public void RecordFeedback(int rating, string comments)
         {
-            this.satisfactionRating = rating;
+            satisfactionRating = rating;
             this.comments = comments;
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApexSolutions
+namespace ApexSolutions.Models
 {
     public class ServiceRequest
     {
@@ -31,31 +31,31 @@ namespace ApexSolutions
         // Constructor
         public ServiceRequest(int requestId, int clientId, string issueDetails, string priorityLevel)
         {
-            this.requestID = requestId;
-            this.clientID = clientId;
+            requestID = requestId;
+            clientID = clientId;
             this.issueDetails = issueDetails;
             this.priorityLevel = priorityLevel;
-            this.status = "Open"; // default status
-            this.creationTimestamp = DateTime.Now;
+            status = "Open"; // default status
+            creationTimestamp = DateTime.Now;
         }
 
         // Methods (Stubs)
         public void AssignTechnician(int technicianID)
         {
-            this.assignedTechnicianID = technicianID;
-            this.status = "Assigned";
+            assignedTechnicianID = technicianID;
+            status = "Assigned";
         }
 
         public void CloseRequest()
         {
-            this.status = "Closed";
-            this.resolutionTimestamp = DateTime.Now;
+            status = "Closed";
+            resolutionTimestamp = DateTime.Now;
         }
 
         public void EscalateRequest()
         {
-            this.priorityLevel = "High";
-            this.status = "Escalated";
+            priorityLevel = "High";
+            status = "Escalated";
         }
     }
 }
