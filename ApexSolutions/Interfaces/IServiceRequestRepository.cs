@@ -11,5 +11,6 @@ namespace ApexSolutions.Repositories
         Task<ServiceRequest> AddAsync(ServiceRequest serviceRequest);
         Task<ServiceRequest> UpdateAsync(ServiceRequest serviceRequest);
         Task<bool> DeleteAsync(int serviceRequestId);
+
     }
 }
