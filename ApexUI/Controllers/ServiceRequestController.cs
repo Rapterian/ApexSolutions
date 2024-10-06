@@ -1,21 +1,21 @@
 ﻿using ApexSolutions.DTOs;
-using ApexSolutions.Repositories;
+using ApexSolutions.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApexUI.Controllers
 {
     public class ServiceRequestController : Controller
     {
-        private readonly IServiceRequestRepository _serviceRequestService;
+        private readonly IServiceRequestService _serviceRequestService;
 
-        public ServiceRequestController(IServiceRequestRepository serviceRequestService)
+        public ServiceRequestController(IServiceRequestService serviceRequestService)
         {
             _serviceRequestService = serviceRequestService;
         }
 
         public IActionResult Index()
         {
-            var requests = _serviceRequestService.GetAllAsync();
+            var requests = _serviceRequestService.GetAllServiceRequestsAsync();
             return View(requests);
         }
 
@@ -29,7 +29,7 @@ namespace ApexUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _serviceRequestService.CreateServiceRequest(dto);
+                _serviceRequestService.CreateServiceRequestAsync(dto);
                 return RedirectToAction("Index");
             }
             return View(dto);
@@ -37,7 +37,7 @@ namespace ApexUI.Controllers
 
         public IActionResult Edit(int id)
         {
-            var request = _serviceRequestService.GetServiceRequestById(id);
+            var request = _serviceRequestService.GetServiceRequestByIdAsync(id);
             if (request == null) return NotFound();
             return View(request);
         }
