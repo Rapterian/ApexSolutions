@@ -11,5 +11,6 @@ namespace ApexSolutions.Repositories
         Task AddAsync(Technician technician);
         Task UpdateAsync(Technician technician);
         Task DeleteAsync(int technicianId);
+
     }
 }

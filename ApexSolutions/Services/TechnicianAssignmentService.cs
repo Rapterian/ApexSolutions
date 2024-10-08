@@ -30,7 +30,7 @@ namespace ApexSolutions.Services
 
             // Retrieve the technician
             var technician = await _technicianRepository.GetByIdAsync(technicianId);
-            if (technician == null || !technician.IsAvailable)
+            if (technician == null || !technician.IsAvailable())
             {
                 return false; // Technician not found or not available
             }
@@ -57,7 +57,7 @@ namespace ApexSolutions.Services
             var technicians = await _technicianRepository.GetAllAsync();
 
             // Filter available technicians (this could be more complex based on your business logic)
-            var availableTechnicians = technicians.FindAll(t => t.IsAvailable && t.Skills.Contains(serviceRequest.PriorityLevel)); // Example logic
+            var availableTechnicians = technicians.FindAll(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.PriorityLevel)); // Example logic
 
             return availableTechnicians;
         }
