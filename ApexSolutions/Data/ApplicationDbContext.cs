@@ -26,18 +26,21 @@ namespace ApexCare.Data
             base.OnModelCreating(modelBuilder);
 
             // Example: Configure a relationship between ServiceRequest and Client (one-to-many)
+            /*
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Client)
                 .WithMany(c => c.ServiceRequests)
                 .HasForeignKey(sr => sr.ClientId)
                 .OnDelete(DeleteBehavior.Cascade); // Configure cascading deletes
-
+            */
+            /*
             // Example: Configure a relationship between ServiceRequest and Technician (many-to-one)
             modelBuilder.Entity<ServiceRequest>()
                 .HasOne(sr => sr.Technician)
                 .WithMany(t => t.ServiceRequests)
                 .HasForeignKey(sr => sr.TechnicianId)
                 .OnDelete(DeleteBehavior.SetNull); // Set null if the technician is deleted
+            */
         }
     }
 }

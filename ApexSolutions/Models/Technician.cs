@@ -42,5 +42,10 @@ namespace ApexSolutions.Models
         {
             assignedRequests.Add(requestID);
         }
+        public bool IsAvailable()
+        {
+            return availabilityStatus;
+        }
+
     }
 }
