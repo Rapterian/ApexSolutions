@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApexSolutions
+namespace ApexSolutions.Models
 {
     public class Technician
     {
@@ -28,19 +28,24 @@ namespace ApexSolutions
             this.technicianID = technicianID;
             this.name = name;
             this.skills = skills;
-            this.availabilityStatus = true; // default to available
-            this.assignedRequests = new List<int>();
+            availabilityStatus = true; // default to available
+            assignedRequests = new List<int>();
         }
 
         // Methods
         public void UpdateAvailability(bool isAvailable)
         {
-            this.availabilityStatus = isAvailable;
+            availabilityStatus = isAvailable;
         }
 
         public void ReceiveJob(int requestID)
         {
             assignedRequests.Add(requestID);
         }
+        public bool IsAvailable()
+        {
+            return availabilityStatus;
+        }
+
     }
 }

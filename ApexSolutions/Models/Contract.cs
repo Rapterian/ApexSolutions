@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApexSolutions
+namespace ApexSolutions.Models
 {
     public class Contract
     {
@@ -30,20 +30,20 @@ namespace ApexSolutions
             this.contractID = contractID;
             this.clientID = clientID;
             this.servicePackage = servicePackage;
-            this.contractStatus = "Active";
+            contractStatus = "Active";
             this.renewalDate = renewalDate;
         }
 
         // Methods
         public void RenewContract()
         {
-            this.contractStatus = "Renewed";
-            this.renewalDate = DateTime.Now.AddYears(1); // Renew for 1 year
+            contractStatus = "Renewed";
+            renewalDate = DateTime.Now.AddYears(1); // Renew for 1 year
         }
 
         public void TrackPerformance(string metrics)
         {
-            this.performanceMetrics = metrics;
+            performanceMetrics = metrics;
         }
     }
 }

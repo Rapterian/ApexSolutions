@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApexSolutions
+namespace ApexSolutions.Models
 {
     public class Client
     {
@@ -31,7 +31,7 @@ namespace ApexSolutions
             this.name = name;
             this.contactDetails = contactDetails;
             this.contractID = contractID;
-            this.serviceHistory = new List<ServiceRequest>();
+            serviceHistory = new List<ServiceRequest>();
         }
 
         // Methods
@@ -42,7 +42,7 @@ namespace ApexSolutions
 
         public void FlagKeyClient()
         {
-            this.isKeyClient = true;
+            isKeyClient = true;
         }
     }
 }
