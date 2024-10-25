@@ -9,13 +9,18 @@ namespace ApexSolutions.Services
 {
     public class TechnicianAssignmentService
     {
-        private readonly ITechnicianRepository _technicianRepository; // Assume you have a technician repository
+        private readonly ITechnicianRepository _technicianRepository; 
         private readonly IServiceRequestRepository _serviceRequestRepository;
+        private readonly SmsService _smsService;
 
-        public TechnicianAssignmentService(ITechnicianRepository technicianRepository, IServiceRequestRepository serviceRequestRepository)
+        public TechnicianAssignmentService(
+            ITechnicianRepository technicianRepository,
+            IServiceRequestRepository serviceRequestRepository,
+            SmsService smsService) // Inject SmsService
         {
             _technicianRepository = technicianRepository;
             _serviceRequestRepository = serviceRequestRepository;
+            _smsService = smsService;
         }
 
         // Assign a technician to a service request
@@ -41,6 +46,11 @@ namespace ApexSolutions.Services
 
             // Save changes to the service request
             await _serviceRequestRepository.UpdateAsync(serviceRequest);
+
+            // Send SMS notification to technician
+            var message = $"You have been assigned a new job. Job ID: {serviceRequestId}";
+            await _smsService.SendSmsAsync("your_api_token", technician.ContactNumber, "", message);
+
             return true;
         }
 
