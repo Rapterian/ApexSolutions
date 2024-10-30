@@ -4,6 +4,12 @@ using ApexSolutions.Models;
 using ApexSolutions.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ApexSolutions.Services
 {
@@ -60,6 +66,42 @@ namespace ApexSolutions.Services
             var availableTechnicians = technicians.FindAll(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.PriorityLevel)); // Example logic
 
             return availableTechnicians;
+        }
+        public readonly HttpClient _client;
+         private async Task SendSmsNotification(string technicianId, string technicianName, string phoneNumber, int requestId, int serviceRequestId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://api.d7networks.com/messages/v1/send");
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("Authorization", $"Bearer {"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoLWJhY2tlbmQ6YXBwIiwic3ViIjoiMmNhMTg" +
+                "1NmUtOTY2Ny00NWFhLWFkNjEtMGU0ODI1ZTBkY2M4In0.aA0s" +
+                "8ATFhxJAy8Hkc463a76sWfWflIUKJWOxKO4PpGM"}");
+
+            var payload = $@"
+                {{
+                ""messages"": [
+                    {{
+                        ""channel"": ""sms"",
+                        ""recipients"": [""{phoneNumber}""],
+                        ""content"": ""{$"Hi {technicianName} TechNo:{technicianId}, a new job has been assigned to you: Request #{requestId}."}"",
+                        ""msg_type"": ""text"",
+                        ""data_coding"": ""text""
+                    }}
+                ],
+                ""message_globals"": {{
+                    ""originator"": ""SignOTP"",
+                    ""report_url"": ""https://the_url_to_recieve_delivery_report.com""
+                }}
+                }}";
+        var content = new StringContent(payload, Encoding.UTF8, "application/json");
+        request.Content = content;
+        
+        // Send the request and ensure success
+        var response = await _client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        // Output the response for logging/debugging
+        var responseContent = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(responseContent);
         }
     }
 }
