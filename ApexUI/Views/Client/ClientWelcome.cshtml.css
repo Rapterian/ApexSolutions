@@ -1,0 +1,11 @@
+﻿header, main {
+    text-align: center;
+}
+
+.banner {
+    margin-top: 20px;
+}
+
+.info-section, .steps {
+    margin-top: 20px;
+}

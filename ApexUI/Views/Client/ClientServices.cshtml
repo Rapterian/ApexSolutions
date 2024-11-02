@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Service - ApexSolutions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header>
+    <h1>ApexSolutions</h1>
+</header>
+
+<main>
+    <h2>Service</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Service ID</th>
+                <th>Status</th>
+                <th>Technician</th>
+                <th>Complete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Service details go here -->
+        </tbody>
+    </table>
+
+    <div>
+        <label>Client:</label>
+        <span>Client Name</span>
+    </div>
+
+    <div>
+        <label>Description:</label>
+        <textarea></textarea>
+    </div>
+
+    <div>
+        <label>Feedback:</label>
+        <textarea></textarea>
+    </div>
+
+    <button>Edit Description</button>
+    <button>Give Feedback</button>
+</main>
+
+
+
+
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+
+    textarea {
+        width: 100%;
+        height: 60px;
+        margin-top: 10px;
+    }
+
+    button {
+        margin: 10px 5px;
+    }
+
+</style>
