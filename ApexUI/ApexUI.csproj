@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\ClientDashboard.cshtml.css" />
+    <None Include="wwwroot\css\ClientFeedback.cshtml.css" />
+    <None Include="wwwroot\css\ClientLogin.cshtml.css" />
+    <None Include="wwwroot\css\ClientRegister.cshtml.css" />
+    <None Include="wwwroot\css\ClientServices.cshtml.css" />
+    <None Include="wwwroot\css\ClientWelcome.cshtml.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ApexSolutions\ApexSolutions.csproj" />
   </ItemGroup>
 
