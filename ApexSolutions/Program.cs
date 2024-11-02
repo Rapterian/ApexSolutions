@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApexSolutions.Models;
 
 namespace ApexSolutions
 {
@@ -18,7 +19,7 @@ namespace ApexSolutions
             ServiceRequest request = new ServiceRequest(101, client.ClientID, "Air conditioner malfunction", "Medium");
 
             // Assign a technician to the service request
-            Technician technician = new Technician(501, "Jane Smith", "HVAC Specialist");
+            Technician technician = new Technician(501, "Jane Smith", "HVAC Specialist", "012 345 6789");
             technician.ReceiveJob(request.RequestID);
             request.AssignTechnician(technician.TechnicianID);
 
