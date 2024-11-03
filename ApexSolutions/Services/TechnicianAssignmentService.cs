@@ -41,7 +41,7 @@ namespace ApexSolutions.Services
             }
 
             // Assign technician
-            serviceRequest.AssignedTechnicianID = technicianId;
+            serviceRequest.TechnicianID = technicianId;
             serviceRequest.Status = "Assigned"; // Update status of the service request
 
             // Save changes to the service request
@@ -67,7 +67,7 @@ namespace ApexSolutions.Services
             var technicians = await _technicianRepository.GetAllAsync();
 
             // Filter available technicians (this could be more complex based on your business logic)
-            var availableTechnicians = technicians.FindAll(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.PriorityLevel)); // Example logic
+            var availableTechnicians = technicians.FindAll(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.Priority)); // Example logic
 
             return availableTechnicians;
         }

@@ -1,48 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApexSolutions.Models
 {
+    [Table("Client")] // Specify the table name
     public class Client
     {
-        // Fields
-        private int clientID;
-        private string name;
-        private string contactDetails;
-        private List<ServiceRequest> serviceHistory;
-        private int contractID;
-        private bool isKeyClient;
-
         // Properties
-        public int ClientID { get => clientID; set => clientID = value; }
-        public string Name { get => name; set => name = value; }
-        public string ContactDetails { get => contactDetails; set => contactDetails = value; }
-        public List<ServiceRequest> ServiceHistory { get => serviceHistory; set => serviceHistory = value; }
-        public int ContractID { get => contractID; set => contractID = value; }
-        public bool IsKeyClient { get => isKeyClient; set => isKeyClient = value; }
+        [Key] // Marks this property as the primary key
+        public int ClientID { get; set; }
+
+        [Required] // Indicates that this field is required
+        [MaxLength(100)] // Specifies a maximum length for the string
+        public string Name { get; set; }
+
+        [Required] // Indicates that this field is required
+        [MaxLength(100)] // Specifies a maximum length for the string
+        [EmailAddress] // Validates that the string is a valid email address
+        public string Email { get; set; }
+
+        [Required] // Indicates that this field is required
+        [MaxLength(15)] // Specifies a maximum length for the string
+        public string PhoneNumber { get; set; }
+
+        [MaxLength(255)] // Specifies a maximum length for the string
+        public string Address { get; set; }
+
+        // Navigation property for related service requests
+        public virtual ICollection<ServiceRequest> ServiceHistory { get; set; } = new List<ServiceRequest>();
+
+        // Optional: You can add additional properties as needed
+        public bool IsKeyClient { get; set; } = false; // Default value
+
+        // Parameterless constructor for EF or other frameworks
+        public Client() { }
 
         // Constructor
-        public Client(int clientID, string name, string contactDetails, int contractID)
+        public Client(string name, string email, string phoneNumber, string address)
         {
-            this.clientID = clientID;
-            this.name = name;
-            this.contactDetails = contactDetails;
-            this.contractID = contractID;
-            serviceHistory = new List<ServiceRequest>();
+            Name = name;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            ServiceHistory = new List<ServiceRequest>(); // Initialize the service history
         }
 
         // Methods
         public void LogClientInteraction(ServiceRequest request)
         {
-            serviceHistory.Add(request);
+            ServiceHistory.Add(request);
         }
 
         public void FlagKeyClient()
         {
-            isKeyClient = true;
+            IsKeyClient = true;
         }
     }
 }
