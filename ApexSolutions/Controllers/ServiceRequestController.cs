@@ -47,7 +47,7 @@ namespace ApexCare.Controllers
             }
 
             var createdServiceRequest = await _serviceRequestService.CreateServiceRequest(serviceRequestDto);
-            return CreatedAtAction(nameof(GetServiceRequestById), new { id = createdServiceRequest.RequestID }, createdServiceRequest);
+            return CreatedAtAction(nameof(GetServiceRequestById), new { id = createdServiceRequest.ServiceRequestID }, createdServiceRequest);
         }
 
         // Update an existing service request (PUT request)

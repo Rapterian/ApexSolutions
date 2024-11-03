@@ -20,14 +20,14 @@ namespace ApexSolutions.Models
         public int FeedbackID { get => feedbackID; set => feedbackID = value; }
         public int ClientID { get => clientID; set => clientID = value; }
         public int ServiceRequestID { get => serviceRequestID; set => serviceRequestID = value; }
-        public int SatisfactionRating { get => satisfactionRating; set => satisfactionRating = value; }
+        public int Rating { get => satisfactionRating; set => satisfactionRating = value; }
         public string Comments { get => comments; set => comments = value; }
-        public DateTime FeedbackDate { get => feedbackDate; set => feedbackDate = value; }
+        public DateTime SubmittedDate { get => feedbackDate; set => feedbackDate = value; }
 
         // Constructor
-        public Feedback(int feedbackID, int clientID, int serviceRequestID, int satisfactionRating, string comments)
+        public Feedback( int clientID, int serviceRequestID, int satisfactionRating, string comments)
         {
-            this.feedbackID = feedbackID;
+            
             this.clientID = clientID;
             this.serviceRequestID = serviceRequestID;
             this.satisfactionRating = satisfactionRating;
