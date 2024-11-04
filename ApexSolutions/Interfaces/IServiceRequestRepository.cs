@@ -1,16 +1,24 @@
-﻿using ApexSolutions.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ApexSolutions.Models;
 
-namespace ApexSolutions.Repositories
+namespace ApexCare.Interfaces
 {
     public interface IServiceRequestRepository
     {
-        Task<ServiceRequest> GetByIdAsync(int serviceRequestId);
-        Task<List<ServiceRequest>> GetAllAsync();
+        // Create a new service request
         Task<ServiceRequest> AddAsync(ServiceRequest serviceRequest);
-        Task<ServiceRequest> UpdateAsync(ServiceRequest serviceRequest);
-        Task<bool> DeleteAsync(int serviceRequestId);
 
+        // Get all service requests
+        Task<IEnumerable<ServiceRequest>> GetAllAsync();
+
+        // Get a service request by ID
+        Task<ServiceRequest> GetByIdAsync(int serviceRequestId);
+
+        // Update an existing service request
+        Task<ServiceRequest> UpdateAsync(ServiceRequest serviceRequest);
+
+        // Delete a service request
+        Task<bool> DeleteAsync(int serviceRequestId);
     }
 }

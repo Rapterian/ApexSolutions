@@ -1,67 +1,85 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ApexCare.Data;
-using ApexCare.Interfaces;
+using Dapper;
 using ApexSolutions.Models;
+using ApexCare.Interfaces;
 using ApexSolutions.Repositories;
 
 namespace ApexCare.Repositories
 {
-    public class ServiceRequestRepository : IServiceRequestRepository // Implement IServiceRequestRepository
+    public class ServiceRequestRepository : IServiceRequestRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbConnection _dbConnection;
 
-        public ServiceRequestRepository(ApplicationDbContext context)
+        public ServiceRequestRepository(IDbConnection dbConnection)
         {
-            _context = context;
+            _dbConnection = dbConnection;
         }
 
-        // Create a new service request
-        async Task<ServiceRequest> IServiceRequestRepository.AddAsync(ServiceRequest serviceRequest)
+        // Create a new service request and return the new ServiceRequest object with its ID
+        public async Task<ServiceRequest> AddAsync(ServiceRequest serviceRequest)
         {
-            _context.ServiceRequests.Add(serviceRequest);
-            await _context.SaveChangesAsync();
+            var sql = "InsertServiceRequest"; // Name of the stored procedure
+            var parameters = new
+            {
+                serviceRequest.ClientID,
+                serviceRequest.TechnicianID,
+                serviceRequest.Description,
+                serviceRequest.ServiceType,
+                RequestDate = serviceRequest.RequestDate,
+                serviceRequest.Status,
+                serviceRequest.Priority,
+                serviceRequest.EstimatedCompletionTime,
+                serviceRequest.Location
+            };
+            var id = await _dbConnection.QuerySingleAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+            serviceRequest.ServiceRequestID = id; // Assuming ServiceRequest has a ServiceRequestID property
             return serviceRequest;
         }
 
         // Get all service requests
-        async Task<List<ServiceRequest>> IServiceRequestRepository.GetAllAsync()
+        public async Task<IEnumerable<ServiceRequest>> GetAllAsync()
         {
-            return await _context.ServiceRequests.ToListAsync();
+            var sql = "GetServiceRequests"; // Name of the stored procedure
+            return await _dbConnection.QueryAsync<ServiceRequest>(sql, commandType: CommandType.StoredProcedure);
         }
 
-
         // Get a service request by ID
-        async Task<ServiceRequest> IServiceRequestRepository.GetByIdAsync(int serviceRequestId) // Match method signature
+        public async Task<ServiceRequest> GetByIdAsync(int serviceRequestId)
         {
-            return await _context.ServiceRequests.FindAsync(serviceRequestId);
+            var sql = "GetServiceRequestById"; // Assuming you have a stored procedure for this
+            var parameters = new { ServiceRequestID = serviceRequestId }; // Assuming the parameter is ServiceRequestID
+            return await _dbConnection.QuerySingleOrDefaultAsync<ServiceRequest>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
         // Update an existing service request
-        async Task<ServiceRequest> IServiceRequestRepository.UpdateAsync(ServiceRequest serviceRequest)
+        public async Task<ServiceRequest> UpdateAsync(ServiceRequest serviceRequest)
         {
-            _context.Entry(serviceRequest).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            var sql = "UpdateServiceRequest"; // Name of the stored procedure
+            var parameters = new
+            {
+                serviceRequest.ServiceRequestID, // Assuming ServiceRequest has a ServiceRequestID property
+                serviceRequest.TechnicianID,
+                serviceRequest.Description,
+                serviceRequest.ServiceType,
+                serviceRequest.Status,
+                serviceRequest.Priority,
+                serviceRequest.EstimatedCompletionTime,
+                serviceRequest.ActualCompletionTime, // Assuming this property exists in your ServiceRequest model
+                serviceRequest.Location
+            };
+            await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
             return serviceRequest;
         }
 
-
         // Delete a service request
-        async Task<bool> IServiceRequestRepository.DeleteAsync(int serviceRequestId)
+        public async Task<bool> DeleteAsync(int serviceRequestId)
         {
-            // Call the interface implementation
-            var serviceRequest = await ((IServiceRequestRepository)this).GetByIdAsync(serviceRequestId);
-            if (serviceRequest == null)
-            {
-                return false;
-            }
-
-            _context.ServiceRequests.Remove(serviceRequest);
-            await _context.SaveChangesAsync();
-            return true;
+            var sql = "DeleteServiceRequest"; // Name of the stored procedure
+            var parameters = new { ServiceRequestID = serviceRequestId }; // Assuming the parameter is ServiceRequestID
+            var affectedRows = await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            return affectedRows > 0;
         }
-
-
     }
 }

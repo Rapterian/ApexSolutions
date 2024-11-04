@@ -1,50 +1,75 @@
-﻿using ApexCare.Data;
-using ApexSolutions.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
+using Dapper;
+using ApexSolutions.Models;
+using ApexCare.Interfaces;
 
-namespace ApexSolutions.Repositories
+namespace ApexCare.Repositories
 {
-    public class TechnicianRepository : ITechnicianRepository
+    public class TechnicianRepository : IRepository<Technician>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbConnection _dbConnection;
 
-        public TechnicianRepository(ApplicationDbContext context)
+        public TechnicianRepository(IDbConnection dbConnection)
         {
-            _context = context;
+            _dbConnection = dbConnection;
         }
 
-        public async Task<Technician> GetByIdAsync(int technicianId)
+        // Create a new technician and return the new Technician object with its ID
+        public async Task<Technician> AddAsync(Technician technician)
         {
-            return await _context.Technicians.FindAsync(technicianId);
-        }
-
-        public async Task<List<Technician>> GetAllAsync()
-        {
-            return await _context.Technicians.ToListAsync();
-        }
-
-        public async Task AddAsync(Technician technician)
-        {
-            await _context.Technicians.AddAsync(technician);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Technician technician)
-        {
-            _context.Technicians.Update(technician);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int technicianId)
-        {
-            var technician = await GetByIdAsync(technicianId);
-            if (technician != null)
+            var sql = "InsertTechnician"; // Name of the stored procedure
+            var parameters = new
             {
-                _context.Technicians.Remove(technician);
-                await _context.SaveChangesAsync();
-            }
+                technician.Name,
+                technician.Skills,
+                technician.AvailabilityStatus,
+                technician.AssignedRequestIDs
+            };
+            var id = await _dbConnection.QuerySingleAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+            technician.TechnicianID = id; // Assuming Technician has a TechnicianID property
+            return technician;
+        }
+
+        // Get all technicians
+        public async Task<IEnumerable<Technician>> GetAllAsync()
+        {
+            var sql = "GetTechnicians"; // Name of the stored procedure
+            return await _dbConnection.QueryAsync<Technician>(sql, commandType: CommandType.StoredProcedure);
+        }
+
+        // Get a technician by ID
+        public async Task<Technician> GetByIdAsync(int id)
+        {
+            var sql = "GetTechnicianById"; // Assuming you have a stored procedure for this
+            var parameters = new { TechnicianID = id }; // Assuming the parameter is TechnicianID
+            return await _dbConnection.QuerySingleOrDefaultAsync<Technician>(sql, parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        // Update an existing technician
+        public async Task<Technician> UpdateAsync(Technician technician)
+        {
+            var sql = "UpdateTechnician"; // Name of the stored procedure
+            var parameters = new
+            {
+                technician.TechnicianID, // Assuming Technician has a TechnicianID property
+                technician.Name,
+                technician.Skills,
+                technician.AvailabilityStatus,
+                technician.AssignedRequestIDs
+            };
+            await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            return technician;
+        }
+
+        // Delete a technician
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var sql = "DeleteTechnician"; // Name of the stored procedure
+            var parameters = new { TechnicianID = id }; // Assuming the parameter is TechnicianID
+            var affectedRows = await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            return affectedRows > 0;
         }
     }
 }

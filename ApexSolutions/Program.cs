@@ -4,6 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using ApexSolutions.Models;
 using ApexSolutions.Data;
+using ApexSolutions.Repositories;
+using ApexSolutions.Services;
+using ApexCare.Repositories;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace ApexSolutions
 {
@@ -60,5 +65,6 @@ namespace ApexSolutions
 
             Console.WriteLine("All records added successfully!");
         }
+
     }
 }
