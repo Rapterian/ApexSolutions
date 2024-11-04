@@ -1,10 +1,11 @@
-namespace ApexSolutions.Tests;
-
-public class UnitTest1
+namespace ApexSolutions.Tests
 {
-    [Fact]
-    public void Test1()
+    public class UnitTest1
     {
+        [Fact]
+        public void Test1()
+        {
 
+        }
     }
 }
