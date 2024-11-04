@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ApexSolutions.Models;
 
-namespace ApexSolutions.Repositories
+namespace ApexSolutions.Interfaces
 {
     public interface ITechnicianRepository
     {

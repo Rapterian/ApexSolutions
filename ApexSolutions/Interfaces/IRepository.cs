@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ApexCare.Interfaces
+namespace ApexSolutions.Interfaces
 {
     public interface IRepository<T>
     {

@@ -2,7 +2,7 @@
 using ApexSolutions.DTOs; // Assuming you have a DTO for Client
 using ApexSolutions.Services; // Assuming the ClientService is in this namespace
 
-namespace ApexCare.Controllers
+namespace ApexSolutions.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

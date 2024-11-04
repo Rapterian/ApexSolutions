@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ApexSolutions.Models; // Adjust this namespace according to your project structure
 
-namespace ApexSolutions.Repositories
+namespace ApexSolutions.Interfaces
 {
     public interface IClientRepository
     {

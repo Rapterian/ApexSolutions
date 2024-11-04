@@ -3,9 +3,9 @@ using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using ApexSolutions.Models;
-using ApexCare.Interfaces;
+using ApexSolutions.Interfaces;
 
-namespace ApexCare.Repositories
+namespace ApexSolutions.Repositories
 {
     public class TechnicianRepository : IRepository<Technician>
     {
