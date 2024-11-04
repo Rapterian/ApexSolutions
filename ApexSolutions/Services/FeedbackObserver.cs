@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using ApexCare.Interfaces;
+using ApexSolutions.Interfaces;
 using ApexSolutions.Models;
 
-namespace ApexCare.Services
+namespace ApexSolutions.Services
 {
     public class FeedbackObserver : IObserver<Feedback>
     {
