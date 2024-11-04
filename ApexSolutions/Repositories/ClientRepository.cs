@@ -1,62 +1,75 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ApexCare.Data;
+using Dapper;
 using ApexSolutions.Models;
-using ApexCare.Interfaces;
+using ApexSolutions.Interfaces;
 
-namespace ApexCare.Repositories
+namespace ApexSolutions.Repositories
 {
     public class ClientRepository : IRepository<Client>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbConnection _dbConnection;
 
-        public ClientRepository(ApplicationDbContext context)
+        public ClientRepository(IDbConnection dbConnection)
         {
-            _context = context;
+            _dbConnection = dbConnection;
         }
 
-        // Create a new client
+        // Create a new client and return the new Client object with its ID
         public async Task<Client> AddAsync(Client client)
         {
-            _context.Clients.Add(client);
-            await _context.SaveChangesAsync();
+            var sql = "InsertClient"; // Name of the stored procedure
+            var parameters = new
+            {
+                client.Name,
+                client.Email,
+                client.PhoneNumber, // Assuming this property exists in your Client model
+                client.Address
+            };
+            var id = await _dbConnection.QuerySingleAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+            client.ClientID = id; // Assuming Client has a ClientID property
             return client;
         }
 
         // Get all clients
         public async Task<IEnumerable<Client>> GetAllAsync()
         {
-            return await _context.Clients.ToListAsync();
+            var sql = "GetClients"; // Name of the stored procedure
+            return await _dbConnection.QueryAsync<Client>(sql, commandType: CommandType.StoredProcedure);
         }
 
         // Get a client by ID
         public async Task<Client> GetByIdAsync(int id)
         {
-            return await _context.Clients.FindAsync(id);
+            var sql = "GetClientById"; // Assuming you have a stored procedure for this
+            var parameters = new { ClientID = id }; // Assuming the parameter is ClientID
+            return await _dbConnection.QuerySingleOrDefaultAsync<Client>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
         // Update an existing client
         public async Task<Client> UpdateAsync(Client client)
         {
-            _context.Entry(client).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            var sql = "UpdateClient"; // Name of the stored procedure
+            var parameters = new
+            {
+                client.ClientID, // Assuming Client has a ClientID property
+                client.Name,
+                client.Email,
+                client.PhoneNumber,
+                client.Address
+            };
+            await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
             return client;
         }
 
         // Delete a client
         public async Task<bool> DeleteAsync(int id)
         {
-            var client = await GetByIdAsync(id);
-            if (client == null)
-            {
-                return false;
-            }
-
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync();
-            return true;
+            var sql = "DeleteClient"; // Name of the stored procedure
+            var parameters = new { ClientID = id }; // Assuming the parameter is ClientID
+            var affectedRows = await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            return affectedRows > 0;
         }
     }
 }
