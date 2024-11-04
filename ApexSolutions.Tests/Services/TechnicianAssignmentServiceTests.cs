@@ -12,13 +12,13 @@ namespace ApexSolutions.Tests.Services
         private readonly TechnicianAssignmentService _service;
         private readonly Mock<ITechnicianRepository> _technicianRepoMock;
         private readonly Mock<IServiceRequestRepository> _serviceRequestRepoMock;
-        private readonly Mock<SmsService> _smsServiceMock;
+        private readonly Mock<ISmsService> _smsServiceMock;
 
         public TechnicianAssignmentServiceTests()
         {
             _technicianRepoMock = new Mock<ITechnicianRepository>();
             _serviceRequestRepoMock = new Mock<IServiceRequestRepository>();
-            _smsServiceMock = new Mock<SmsService>();
+            _smsServiceMock = new Mock<ISmsService>(); // Use the interface here
             _service = new TechnicianAssignmentService(
                 _technicianRepoMock.Object,
                 _serviceRequestRepoMock.Object,
@@ -29,10 +29,10 @@ namespace ApexSolutions.Tests.Services
         public async Task AssignTechnicianAsync_ValidRequest_AssignsTechnician()
         {
             // Arrange
-            var serviceRequestId = 1;
-            var technicianId = 1;
-            var serviceRequest = new ServiceRequest { Id = serviceRequestId, Status = "Pending" };
-            var technician = new Technician { Id = technicianId, IsAvailable = true };
+            var serviceRequestId = 28;
+            var technicianId = 6;
+            var serviceRequest = new ServiceRequest { ServiceRequestID = serviceRequestId, Status = "Pending" };
+            var technician = new Technician { TechnicianID = technicianId, AvailabilityStatus = true };
 
             _serviceRequestRepoMock.Setup(repo => repo.GetByIdAsync(serviceRequestId))
                 .ReturnsAsync(serviceRequest);
