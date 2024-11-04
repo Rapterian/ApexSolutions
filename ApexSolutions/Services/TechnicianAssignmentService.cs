@@ -1,5 +1,4 @@
-﻿using ApexCare.Repositories;
-using ApexSolutions.Interfaces;
+﻿using ApexCare.Interfaces;
 using ApexSolutions.Models;
 using ApexSolutions.Repositories;
 using System.Collections.Generic;
@@ -9,14 +8,14 @@ namespace ApexSolutions.Services
 {
     public class TechnicianAssignmentService
     {
-        private readonly ITechnicianRepository _technicianRepository; 
+        private readonly ITechnicianRepository _technicianRepository;
         private readonly IServiceRequestRepository _serviceRequestRepository;
         private readonly SmsService _smsService;
 
         public TechnicianAssignmentService(
             ITechnicianRepository technicianRepository,
             IServiceRequestRepository serviceRequestRepository,
-            SmsService smsService) // Inject SmsService
+            SmsService smsService)
         {
             _technicianRepository = technicianRepository;
             _serviceRequestRepository = serviceRequestRepository;
@@ -24,7 +23,7 @@ namespace ApexSolutions.Services
         }
 
         // Assign a technician to a service request
-        public async Task<bool> AssignTechnician(int serviceRequestId, int technicianId)
+        public async Task<bool> AssignTechnicianAsync(int serviceRequestId, int technicianId)
         {
             // Retrieve the service request
             var serviceRequest = await _serviceRequestRepository.GetByIdAsync(serviceRequestId);
@@ -48,14 +47,13 @@ namespace ApexSolutions.Services
             await _serviceRequestRepository.UpdateAsync(serviceRequest);
 
             // Send SMS notification to technician
-            var message = $"You have been assigned a new job. Job ID: {serviceRequestId}";
-            await _smsService.SendSmsAsync("your_api_token", technician.ContactNumber, "", message);
+            await NotifyTechnicianAsync(technician.ContactNumber, serviceRequestId);
 
             return true;
         }
 
         // Get available technicians for a specific service request
-        public async Task<List<Technician>> GetAvailableTechniciansForServiceRequest(int serviceRequestId)
+        public async Task<List<Technician>> GetAvailableTechniciansForServiceRequestAsync(int serviceRequestId)
         {
             var serviceRequest = await _serviceRequestRepository.GetByIdAsync(serviceRequestId);
             if (serviceRequest == null)
@@ -66,10 +64,19 @@ namespace ApexSolutions.Services
             // Retrieve all technicians
             var technicians = await _technicianRepository.GetAllAsync();
 
-            // Filter available technicians (this could be more complex based on your business logic)
-            var availableTechnicians = technicians.FindAll(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.Priority)); // Example logic
+            // Filter available technicians based on business logic
+            var availableTechnicians = technicians
+                .Where(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.Priority)) // Example logic
+                .ToList();
 
             return availableTechnicians;
+        }
+
+        // Notify technician via SMS
+        private async Task NotifyTechnicianAsync(string contactNumber, int serviceRequestId)
+        {
+            var message = $"You have been assigned a new job. Job ID: {serviceRequestId}";
+            await _smsService.SendSmsAsync("your_api_token", contactNumber, "", message);
         }
     }
 }
