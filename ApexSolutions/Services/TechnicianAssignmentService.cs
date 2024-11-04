@@ -3,6 +3,12 @@ using ApexSolutions.Models;
 using ApexSolutions.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ApexSolutions.Services
 {
@@ -72,11 +78,12 @@ namespace ApexSolutions.Services
             return availableTechnicians;
         }
 
+
         // Notify technician via SMS
         private async Task NotifyTechnicianAsync(string contactNumber, int serviceRequestId)
         {
             var message = $"You have been assigned a new job. Job ID: {serviceRequestId}";
             await _smsService.SendSmsAsync("your_api_token", contactNumber, "", message);
-        }
+
     }
 }
