@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq; // Add this for LINQ
 using System.Threading.Tasks;
-using ApexCare.Interfaces;
-using ApexCare.Repositories;
-using ApexSolutions.DTOs;
-using ApexSolutions.Models;
+using ApexSolutions.DTOs; // Adjust this namespace according to your project structure
+using ApexSolutions.Models; // Assuming you have a ServiceRequest model
+using ApexCare.Interfaces; // Assuming you have a repository interface for ServiceRequest
+using ApexCare.Repositories; // Assuming you have a repository interface for ServiceRequest
 
 namespace ApexCare.Services
 {
@@ -12,102 +12,101 @@ namespace ApexCare.Services
     {
         private readonly IRepository<ServiceRequest> _serviceRequestRepository;
 
+        // Constructor injection of the repository
         public ServiceRequestService(IRepository<ServiceRequest> serviceRequestRepository)
         {
             _serviceRequestRepository = serviceRequestRepository;
         }
 
-        // Create a new service request
-        public async Task<ServiceRequest> CreateServiceRequest(ServiceRequest serviceRequest)
-        {
-            // TODO - include validation logic here
-            // TODO - Set timestamp
-            return await _serviceRequestRepository.AddAsync(serviceRequest);
-        }
-        public async Task<ServiceRequest> CreateServiceRequest(ServiceRequestDTO serviceRequestDto)
-        {
-            // Create a new instance of ServiceRequest using the parameterless constructor
-            var newRequest = new ServiceRequest
-            {
-                ClientID = serviceRequestDto.ClientID,
-                Description = serviceRequestDto.Description,
-                // You need to decide how to set ServiceType, RequestDate, and Location
-                ServiceType = "DefaultServiceType", // Set a default or map accordingly
-                RequestDate = DateTime.UtcNow, // Set the current date/time
-                Status = serviceRequestDto.Status ?? "Open", // Default to "Open" if Status is null
-                Priority = serviceRequestDto.PriorityLevel, // Map PriorityLevel to Priority
-                                                            // Other properties can be set to null or default values as needed
-            };
-
-            // Optionally set AssignedTechnicianID and ResolutionTimestamp if needed
-            // newRequest.TechnicianID = serviceRequestDto.AssignedTechnicianID;
-
-            // Call repository to add the new request
-            return await _serviceRequestRepository.AddAsync(newRequest);
-        }
-
         // Get all service requests
-        public async Task<IEnumerable<ServiceRequest>> GetAllServiceRequests()
+        public async Task<IEnumerable<ServiceRequestDTO>> GetAllServiceRequestsAsync()
         {
-            return await _serviceRequestRepository.GetAllAsync();
+            var serviceRequests = await _serviceRequestRepository.GetAllAsync();
+            return MapToDTO(serviceRequests); // Map to DTOs
         }
 
-        // Get a service request by ID
-        public async Task<ServiceRequest> GetServiceRequestById(int id)
+        // Get a specific service request by ID
+        public async Task<ServiceRequestDTO> GetServiceRequestByIdAsync(int id)
         {
-            return await _serviceRequestRepository.GetByIdAsync(id);
+            var serviceRequest = await _serviceRequestRepository.GetByIdAsync(id);
+            return serviceRequest != null ? MapToDTO(serviceRequest) : null;
+        }
+
+        // Create a new service request
+        public async Task<ServiceRequestDTO> CreateServiceRequestAsync(ServiceRequestDTO serviceRequestDto)
+        {
+            var serviceRequest = MapToModel(serviceRequestDto);
+            var createdServiceRequest = await _serviceRequestRepository.AddAsync(serviceRequest);
+            return MapToDTO(createdServiceRequest);
         }
 
         // Update an existing service request
-        public async Task<ServiceRequest> UpdateServiceRequest(ServiceRequest serviceRequest)
+        public async Task<ServiceRequestDTO> UpdateServiceRequestAsync(int id, ServiceRequestDTO serviceRequestDto)
         {
-            // TODO - include validation logic here
-            return await _serviceRequestRepository.UpdateAsync(serviceRequest);
-        }
-
-        public async Task<ServiceRequest> UpdateServiceRequest(int id, ServiceRequestDTO serviceRequestDto)
-        {
-            // Retrieve the existing service request
-            var existingRequest = await GetServiceRequestById(id);
+            var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
             if (existingRequest == null)
             {
-                return null; // Return null if not found
+                return null; // Request not found
             }
 
             // Update properties from DTO
             existingRequest.Description = serviceRequestDto.Description;
             existingRequest.Priority = serviceRequestDto.PriorityLevel;
             existingRequest.Status = serviceRequestDto.Status;
+            existingRequest.ServiceType = serviceRequestDto.ServiceType; // Example property
+            // Add any other properties you want to update
 
-            // Call the repository to update
-            return await _serviceRequestRepository.UpdateAsync(existingRequest);
+            var updatedRequest = await _serviceRequestRepository.UpdateAsync(existingRequest);
+            return MapToDTO(updatedRequest);
         }
 
         // Delete a service request
-        public async Task<bool> DeleteServiceRequest(int id)
+        public async Task<bool> DeleteServiceRequestAsync(int id)
         {
-            return await _serviceRequestRepository.DeleteAsync(id);
+            var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
+            if (existingRequest == null)
+            {
+                return false; // Request not found
+            }
+
+            await _serviceRequestRepository.DeleteAsync(existingRequest.ServiceRequestID);
+            return true;
         }
 
-        // Additional methods for specific business logic
-        public async Task AssignTechnician(int requestId, int technicianId)
+        // Mapping methods
+        private ServiceRequestDTO MapToDTO(ServiceRequest serviceRequest)
         {
-            var serviceRequest = await GetServiceRequestById(requestId);
-            if (serviceRequest != null)
+            return new ServiceRequestDTO
             {
-                serviceRequest.AssignTechnician(technicianId);
-                await UpdateServiceRequest(serviceRequest);
-            }
+                ServiceRequestID = serviceRequest.ServiceRequestID,
+                ClientID = serviceRequest.ClientID,
+                Description = serviceRequest.Description,
+                ServiceType = serviceRequest.ServiceType,
+                RequestDate = serviceRequest.RequestDate,
+                Status = serviceRequest.Status,
+                PriorityLevel = serviceRequest.Priority,
+                // Map other properties as necessary
+            };
         }
 
-        public async Task CloseRequest(int requestId)
+        private IEnumerable<ServiceRequestDTO> MapToDTO(IEnumerable<ServiceRequest> serviceRequests)
         {
-            var serviceRequest = await GetServiceRequestById(requestId);
-            if (serviceRequest != null)
+            return serviceRequests.Select(request => MapToDTO(request)); // Map each ServiceRequest to ServiceRequestDTO
+        }
+
+        private ServiceRequest MapToModel(ServiceRequestDTO serviceRequestDto)
+        {
+            return new ServiceRequest
             {
-                serviceRequest.CloseRequest();
-                await UpdateServiceRequest(serviceRequest);
-            }
+                ServiceRequestID = serviceRequestDto.ServiceRequestID,
+                ClientID = serviceRequestDto.ClientID,
+                Description = serviceRequestDto.Description,
+                ServiceType = serviceRequestDto.ServiceType,
+                RequestDate = DateTime.UtcNow, // Set the current date/time
+                Status = serviceRequestDto.Status ?? "Open", // Default to "Open" if Status is null
+                Priority = serviceRequestDto.PriorityLevel,
+                // Map other properties as necessary
+            };
         }
     }
 }
