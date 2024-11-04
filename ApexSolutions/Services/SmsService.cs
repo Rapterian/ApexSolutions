@@ -1,8 +1,11 @@
-﻿using System.Text;
+﻿using ApexSolutions.Interfaces;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ApexSolutions.Services
 {
-    public class SmsService
+    public class SmsService : ISmsService
     {
         private readonly HttpClient _client;
 

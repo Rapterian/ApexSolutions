@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ApexSolutions.DTOs;
 
-namespace ApexSolutions.Services
+namespace ApexSolutions.Interfaces
 {
     public interface ITechnicianService
     {

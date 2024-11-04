@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApexSolutions.DTOs;
 using ApexSolutions.Models;
-using ApexSolutions.Repositories;
+using ApexSolutions.Interfaces;
 
 namespace ApexSolutions.Services
 {

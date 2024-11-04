@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq; // Add this for LINQ
+using System.Linq; 
 using System.Threading.Tasks;
-using ApexSolutions.DTOs; // Adjust this namespace according to your project structure
-using ApexSolutions.Models; // Assuming you have a Client model
-using ApexSolutions.Repositories; // Assuming you have a repository interface for Client
+using ApexSolutions.DTOs; 
+using ApexSolutions.Models;
+using ApexSolutions.Repositories;
+using ApexSolutions.Interfaces;
 
 namespace ApexSolutions.Services
 {

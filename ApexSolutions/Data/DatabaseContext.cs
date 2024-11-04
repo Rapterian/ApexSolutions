@@ -1,11 +1,12 @@
-﻿namespace ApexSolutions.Data
-{
-    using System.Data.SqlClient;
-    using Dapper;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using ApexSolutions.Models;
+﻿using System.Data.SqlClient;
+using Dapper;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ApexSolutions.Models;
 
+
+namespace ApexSolutions.Data
+{
     public class DatabaseContext
     {
         private readonly string _connectionString;

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ApexSolutions.Models;
 
-namespace ApexCare.Interfaces
+namespace ApexSolutions.Interfaces
 {
     public interface IServiceRequestRepository
     {

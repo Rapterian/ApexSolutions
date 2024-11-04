@@ -1,4 +1,4 @@
-﻿using ApexCare.Interfaces;
+﻿using ApexSolutions.Interfaces;
 using ApexSolutions.Models;
 using ApexSolutions.Repositories;
 using System.Collections.Generic;
@@ -10,12 +10,12 @@ namespace ApexSolutions.Services
     {
         private readonly ITechnicianRepository _technicianRepository;
         private readonly IServiceRequestRepository _serviceRequestRepository;
-        private readonly SmsService _smsService;
+        private readonly ISmsService _smsService;
 
         public TechnicianAssignmentService(
             ITechnicianRepository technicianRepository,
             IServiceRequestRepository serviceRequestRepository,
-            SmsService smsService)
+            ISmsService smsService)
         {
             _technicianRepository = technicianRepository;
             _serviceRequestRepository = serviceRequestRepository;

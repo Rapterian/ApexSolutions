@@ -2,9 +2,8 @@
 using ApexSolutions.DTOs; // Assuming you have a DTO for ServiceRequest
 using ApexSolutions.Services; // Assuming the ServiceRequestService is in this namespace
 using System.Threading.Tasks;
-using ApexCare.Services;
 
-namespace ApexCare.Controllers
+namespace ApexSolutions.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

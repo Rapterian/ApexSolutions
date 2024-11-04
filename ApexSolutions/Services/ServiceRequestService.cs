@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq; // Add this for LINQ
+using System.Linq;
 using System.Threading.Tasks;
-using ApexSolutions.DTOs; // Adjust this namespace according to your project structure
-using ApexSolutions.Models; // Assuming you have a ServiceRequest model
-using ApexCare.Interfaces; // Assuming you have a repository interface for ServiceRequest
-using ApexCare.Repositories; // Assuming you have a repository interface for ServiceRequest
-
-namespace ApexCare.Services
+using ApexSolutions.DTOs; 
+using ApexSolutions.Models; 
+using ApexSolutions.Interfaces; 
+using ApexSolutions.Repositories; 
+namespace ApexSolutions.Services
 {
     public class ServiceRequestService
     {

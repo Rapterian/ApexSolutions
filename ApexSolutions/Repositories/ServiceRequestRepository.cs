@@ -3,10 +3,10 @@ using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using ApexSolutions.Models;
-using ApexCare.Interfaces;
+using ApexSolutions.Interfaces;
 using ApexSolutions.Repositories;
 
-namespace ApexCare.Repositories
+namespace ApexSolutions.Repositories
 {
     public class ServiceRequestRepository : IServiceRequestRepository
     {
