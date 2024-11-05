@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ApexSolutions.DTOs; 
-using ApexSolutions.Models; 
-using ApexSolutions.Interfaces; 
-using ApexSolutions.Repositories; 
+using ApexSolutions.DTOs;
+using ApexSolutions.Models;
+using ApexSolutions.Interfaces;
+using ApexSolutions.Repositories;
+
 namespace ApexSolutions.Services
 {
     public class ServiceRequestService
@@ -14,67 +16,133 @@ namespace ApexSolutions.Services
         // Constructor injection of the repository
         public ServiceRequestService(IRepository<ServiceRequest> serviceRequestRepository)
         {
-            _serviceRequestRepository = serviceRequestRepository;
+            _serviceRequestRepository = serviceRequestRepository ?? throw new ArgumentNullException(nameof(serviceRequestRepository), "Service request repository cannot be null");
         }
 
         // Get all service requests
         public async Task<IEnumerable<ServiceRequestDTO>> GetAllServiceRequestsAsync()
         {
-            var serviceRequests = await _serviceRequestRepository.GetAllAsync();
-            return MapToDTO(serviceRequests); // Map to DTOs
+            try
+            {
+                var serviceRequests = await _serviceRequestRepository.GetAllAsync();
+                return MapToDTO(serviceRequests);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching service requests: {ex.Message}");
+                return Enumerable.Empty<ServiceRequestDTO>();
+            }
         }
 
         // Get a specific service request by ID
         public async Task<ServiceRequestDTO> GetServiceRequestByIdAsync(int id)
         {
-            var serviceRequest = await _serviceRequestRepository.GetByIdAsync(id);
-            return serviceRequest != null ? MapToDTO(serviceRequest) : null;
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid service request ID");
+            }
+
+            try
+            {
+                var serviceRequest = await _serviceRequestRepository.GetByIdAsync(id);
+                return serviceRequest != null ? MapToDTO(serviceRequest) : null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching service request with ID {id}: {ex.Message}");
+                return null;
+            }
         }
 
         // Create a new service request
         public async Task<ServiceRequestDTO> CreateServiceRequestAsync(ServiceRequestDTO serviceRequestDto)
         {
-            var serviceRequest = MapToModel(serviceRequestDto);
-            var createdServiceRequest = await _serviceRequestRepository.AddAsync(serviceRequest);
-            return MapToDTO(createdServiceRequest);
+            if (serviceRequestDto == null)
+            {
+                throw new ArgumentNullException(nameof(serviceRequestDto), "ServiceRequestDTO cannot be null");
+            }
+
+            try
+            {
+                var serviceRequest = MapToModel(serviceRequestDto);
+                var createdServiceRequest = await _serviceRequestRepository.AddAsync(serviceRequest);
+                return MapToDTO(createdServiceRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating service request: {ex.Message}");
+                return null;
+            }
         }
 
         // Update an existing service request
         public async Task<ServiceRequestDTO> UpdateServiceRequestAsync(int id, ServiceRequestDTO serviceRequestDto)
         {
-            var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
-            if (existingRequest == null)
+            if (serviceRequestDto == null)
             {
-                return null; // Request not found
+                throw new ArgumentNullException(nameof(serviceRequestDto), "ServiceRequestDTO cannot be null");
             }
 
-            // Update properties from DTO
-            existingRequest.Description = serviceRequestDto.Description;
-            existingRequest.Priority = serviceRequestDto.PriorityLevel;
-            existingRequest.Status = serviceRequestDto.Status;
-            existingRequest.ServiceType = serviceRequestDto.ServiceType; // Example property
-            // Add any other properties you want to update
+            try
+            {
+                var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
+                if (existingRequest == null)
+                {
+                    Console.WriteLine($"Service request with ID {id} not found");
+                    return null;
+                }
 
-            var updatedRequest = await _serviceRequestRepository.UpdateAsync(existingRequest);
-            return MapToDTO(updatedRequest);
+                // Update properties from DTO
+                existingRequest.Description = serviceRequestDto.Description;
+                existingRequest.Priority = serviceRequestDto.PriorityLevel;
+                existingRequest.Status = serviceRequestDto.Status;
+                existingRequest.ServiceType = serviceRequestDto.ServiceType;
+
+                var updatedRequest = await _serviceRequestRepository.UpdateAsync(existingRequest);
+                return MapToDTO(updatedRequest);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating service request with ID {id}: {ex.Message}");
+                return null;
+            }
         }
 
         // Delete a service request
         public async Task<bool> DeleteServiceRequestAsync(int id)
         {
-            var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
-            if (existingRequest == null)
+            if (id <= 0)
             {
-                return false; // Request not found
+                throw new ArgumentException("Invalid service request ID");
             }
 
-            await _serviceRequestRepository.DeleteAsync(existingRequest.ServiceRequestID);
-            return true;
+            try
+            {
+                var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
+                if (existingRequest == null)
+                {
+                    Console.WriteLine($"Service request with ID {id} not found");
+                    return false;
+                }
+
+                await _serviceRequestRepository.DeleteAsync(existingRequest.ServiceRequestID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting service request with ID {id}: {ex.Message}");
+                return false;
+            }
         }
 
         // Mapping methods
         private ServiceRequestDTO MapToDTO(ServiceRequest serviceRequest)
         {
+            if (serviceRequest == null)
+            {
+                throw new ArgumentNullException(nameof(serviceRequest), "ServiceRequest cannot be null");
+            }
+
             return new ServiceRequestDTO
             {
                 ServiceRequestID = serviceRequest.ServiceRequestID,
@@ -84,27 +152,35 @@ namespace ApexSolutions.Services
                 RequestDate = serviceRequest.RequestDate,
                 Status = serviceRequest.Status,
                 PriorityLevel = serviceRequest.Priority,
-                // Map other properties as necessary
             };
         }
 
         private IEnumerable<ServiceRequestDTO> MapToDTO(IEnumerable<ServiceRequest> serviceRequests)
         {
-            return serviceRequests.Select(request => MapToDTO(request)); // Map each ServiceRequest to ServiceRequestDTO
+            if (serviceRequests == null)
+            {
+                throw new ArgumentNullException(nameof(serviceRequests), "ServiceRequest list cannot be null");
+            }
+
+            return serviceRequests.Select(request => MapToDTO(request));
         }
 
         private ServiceRequest MapToModel(ServiceRequestDTO serviceRequestDto)
         {
+            if (serviceRequestDto == null)
+            {
+                throw new ArgumentNullException(nameof(serviceRequestDto), "ServiceRequestDTO cannot be null");
+            }
+
             return new ServiceRequest
             {
                 ServiceRequestID = serviceRequestDto.ServiceRequestID,
                 ClientID = serviceRequestDto.ClientID,
                 Description = serviceRequestDto.Description,
                 ServiceType = serviceRequestDto.ServiceType,
-                RequestDate = DateTime.UtcNow, // Set the current date/time
-                Status = serviceRequestDto.Status ?? "Open", // Default to "Open" if Status is null
+                RequestDate = DateTime.UtcNow,
+                Status = serviceRequestDto.Status ?? "Open",
                 Priority = serviceRequestDto.PriorityLevel,
-                // Map other properties as necessary
             };
         }
     }
