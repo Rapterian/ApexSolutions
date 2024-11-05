@@ -1,6 +1,7 @@
 ﻿using ApexSolutions.DTOs;
 using ApexSolutions.Services;
 using Microsoft.AspNetCore.Mvc;
+using ApexSolutions.Interfaces;
 
 namespace ApexUI.Controllers
 {

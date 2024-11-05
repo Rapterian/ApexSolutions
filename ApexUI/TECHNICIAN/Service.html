@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexSolutions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+        }
+        .modal-content {
+            background: linear-gradient(to bottom, #000000, #222222);
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            width: 300px; /* Could be more or less, depending on screen size */
+            color: #ffffff;
+        }
+        .close-btn {
+            color: #ffffff;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #f1f1f1;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        input[type="text"], textarea {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            background: #333333;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="TechnicianDashboard">
+        <div class="sidebar" id="sidebar">
+            <button class="menu-item" onclick="window.location.href='Welcome.html'">Home</button>
+            <button class="menu-item" onclick="window.location.href='TechnicianDashboard.html'">Dashboard</button>
+            <button class="menu-item" onclick="openAccountPopup()">Account</button>
+            <button class="menu-item">Privacy Policy</button>
+        </div>
+        
+        <div class="container">
+            <header class="header">
+                <div class="menu-icon" onclick="toggleSidebar()">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>ApexSolutions</h1>
+            </header>
+            
+            <div class="dashboard-title">
+                <h2>Service</h2>
+            </div>
+            
+            <div class="search-bar">
+                <label for="search">Search</label>
+                <input type="text" id="search" name="search">
+            </div>
+            
+            <div class="Service content">
+                <div class="Service table-box">
+                    <table class="Service table">
+                        <thead>
+                            <tr>
+                                <th>Service ID</th>
+                                <th>Status</th>
+                                <th>Technician</th>
+                                <th>Complete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="Service client-box">
+                    <label for="client">Client:</label>
+                    <input type="text" id="client" name="client" readonly>
+                </div>
+                <div class="Service description-box">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+                <div class="Service client-feedback-box">
+                    <label for="client-feedback">Client Feedback:</label>
+                    <textarea id="client-feedback" name="client-feedback"></textarea>
+                </div>
+                <!-- Complete Service Button -->
+                <div class="Service submit-box">
+                    <button class="Service submit-button" onclick="openCompleteServiceModal()">Complete Service</button>
+                </div>
+                <!-- Feedback Button -->
+                <div class="Service submit-box">
+                    <button class="Service submit-button" onclick="openFeedbackModal()">Provide Feedback</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Complete Service -->
+    <div id="completeServiceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCompleteServiceModal()">&times;</span>
+            <h1>Service</h1>
+            <h2>Service Name</h2>
+            <p>Please Provide feedback</p>
+            <input type="text" placeholder="Feedback" />
+            <button onclick="closeCompleteServiceModal()">Cancel</button>
+            <button>Submit</button>
+        </div>
+    </div>
+
+    <!-- Modal for Feedback -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeFeedbackModal()">&times;</span>
+            <h1>Feedback</h1>
+            <h2>Service Name</h2>
+            <p>Please Provide your feedback</p>
+            <input type="text" placeholder="Feedback" />
+            <button onclick="closeFeedbackModal()">Cancel</button>
+            <button>Submit</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        }
+
+        function openCompleteServiceModal() {
+            document.getElementById("completeServiceModal").style.display = "block";
+        }
+
+        function closeCompleteServiceModal() {
+            document.getElementById("completeServiceModal").style.display = "none";
+        }
+
+        function openFeedbackModal() {
+            document.getElementById("feedbackModal").style.display = "block";
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById("feedbackModal").style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            var completeModal = document.getElementById("completeServiceModal");
+            var feedbackModal = document.getElementById("feedbackModal");
+            if (event.target == completeModal) {
+                completeModal.style.display = "none";
+            } else if (event.target == feedbackModal) {
+                feedbackModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

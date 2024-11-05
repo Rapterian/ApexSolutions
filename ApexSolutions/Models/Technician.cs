@@ -1,54 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApexSolutions.Models
 {
+    [Table("Technician")] // Specify the table name
     public class Technician
     {
-        // Fields
-        private int technicianID;
-        private string name;
-        private string skills;
-        private bool availabilityStatus;
-        private List<int> assignedRequests;
-        private string contactNumber;
-
         // Properties
-        public int TechnicianID { get => technicianID; set => technicianID = value; }
-        public string Name { get => name; set => name = value; }
-        public string Skills { get => skills; set => skills = value; }
-        public bool AvailabilityStatus { get => availabilityStatus; set => availabilityStatus = value; }
-        public List<int> AssignedRequests { get => assignedRequests; }
-        public string ContactNumber { get => contactNumber; set => contactNumber = value; }
+        [Key] // Marks this property as the primary key
+        public int TechnicianID { get; set; }
+
+        [Required] // Indicates that this field is required
+        [MaxLength(100)] // Specifies a maximum length for the string
+        public string Name { get; set; }
+
+        [Required] // Indicates that this field is required
+        [MaxLength(255)] // Specifies a maximum length for the string
+        public string Skills { get; set; }
+
+        [Required] // Indicates that this field is required
+        public bool AvailabilityStatus { get; set; } = true; // Default to true (available)
+
+        public string AssignedRequestIDs { get; set; } // This will hold a comma-separated list of request IDs
+
+        // Optional: Add a property for contact number if needed
+        public string ContactNumber { get; set; }
+
+        // Parameterless constructor for EF or other frameworks
+        public Technician() { }
 
         // Constructor
         public Technician(int technicianID, string name, string skills, string contactNumber)
         {
-            this.technicianID = technicianID;
-            this.name = name;
-            this.skills = skills;
-            availabilityStatus = true; // default to available
-            assignedRequests = new List<int>();
-            this.contactNumber = contactNumber;
+            TechnicianID = technicianID;
+            Name = name;
+            Skills = skills;
+            ContactNumber = contactNumber;
+            AvailabilityStatus = true; // Default to available
+            AssignedRequestIDs = null; // Initialize to null
         }
 
         // Methods
         public void UpdateAvailability(bool isAvailable)
         {
-            availabilityStatus = isAvailable;
+            AvailabilityStatus = isAvailable;
         }
 
         public void ReceiveJob(int requestID)
         {
-            assignedRequests.Add(requestID);
-        }
-        public bool IsAvailable()
-        {
-            return availabilityStatus;
+            if (AssignedRequestIDs == null)
+            {
+                AssignedRequestIDs = requestID.ToString();
+            }
+            else
+            {
+                AssignedRequestIDs += $",{requestID}"; // Append new request ID
+            }
         }
 
+        public bool IsAvailable()
+        {
+            return AvailabilityStatus;
+        }
     }
 }
