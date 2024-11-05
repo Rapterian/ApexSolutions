@@ -5,6 +5,13 @@ using System.Threading.Tasks;
 using ApexSolutions.Interfaces;
 using ApexSolutions.Models;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+
 
 namespace ApexSolutions.Services
 {
@@ -96,6 +103,7 @@ namespace ApexSolutions.Services
             }
         }
 
+
         // Notify technician via SMS
         private async Task NotifyTechnicianAsync(string contactNumber, int serviceRequestId)
         {
@@ -111,5 +119,10 @@ namespace ApexSolutions.Services
                 _logger.LogError(ex, $"Failed to send SMS to Technician with Contact Number {contactNumber} for Service Request ID {serviceRequestId}");
             }
         }
+
+            var message = $"You have been assigned a new job. Job ID: {serviceRequestId}";
+            await _smsService.SendSmsAsync("your_api_token", contactNumber, "", message);
+
+
     }
 }
