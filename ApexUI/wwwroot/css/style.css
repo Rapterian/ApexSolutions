@@ -16,7 +16,7 @@
     rgb(0, 0, 0) 100%
   );
   width: 100%;
-  height: 1628px;
+  height: 1920px;
   position: relative;
 }
 
@@ -56,11 +56,10 @@
 }
 
 .welcome .line {
-  top: 259px;
+  top: 550px;
   position: absolute;
-  width: 1312px;
+  width: 100%;
   height: 3px;
-  left: 100px;
 }
 
 .welcome .img {
@@ -82,7 +81,7 @@
 .welcome .p {
   position: absolute;
   top: 293px;
-  left: 433px;
+  left: 92px;
   font-family: "Inter-Regular", Helvetica;
   font-weight: 400;
   color: #000000;
@@ -121,7 +120,7 @@
   left: 100px;
   font-family: "Inter-Regular", Helvetica;
   font-weight: 400;
-  color: #ffffff;
+  color: black;
   font-size: 36px;
   letter-spacing: 0;
   line-height: normal;
@@ -131,7 +130,7 @@
   position: absolute;
   width: 1224px;
   top: 355px;
-  left: 178px;
+  left: 99px;
   font-family: "Inter-Regular", Helvetica;
   font-weight: 400;
   color: #ffffff;
@@ -143,7 +142,7 @@
 .welcome .text-wrapper-7 {
   width: 860px;
   top: 698px;
-  left: 178px;
+  left: 99px;
   position: absolute;
   font-family: "Inter-Regular", Helvetica;
   font-weight: 400;
@@ -155,7 +154,7 @@
 
 .welcome .text-wrapper-8 {
   width: 819px;
-  top: 1144px;
+  top: 1040px;
   left: 99px;
   position: absolute;
   font-family: "Inter-Regular", Helvetica;
@@ -177,17 +176,43 @@
 }
 
 .welcome .text-wrapper-9 {
+  width: 819px;
+  top: 1220px;
+  left: 99px;
   position: absolute;
-  top: 82px;
-  left: 27px;
   font-family: "Inter-Regular", Helvetica;
   font-weight: 400;
-  color: #000000;
-  font-size: 20px;
+  color: #ffffff;
+  font-size: 32px;
   letter-spacing: 0;
   line-height: normal;
-  white-space: nowrap;
 }
+
+    .welcome .text-wrapper-10 {
+        width: 819px;
+        top: 1375px;
+        left: 99px;
+        position: absolute;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #ffffff;
+        font-size: 32px;
+        letter-spacing: 0;
+        line-height: normal;
+    }
+
+    .welcome .text-wrapper-30 {
+        width: 819px;
+        top: 1575px;
+        left: 99px;
+        position: absolute;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #ffffff;
+        font-size: 32px;
+        letter-spacing: 0;
+        line-height: normal;
+    }
 
 .welcome .div-wrapper {
   position: absolute;
@@ -197,19 +222,6 @@
   left: 999px;
   background-color: #d9d9d9;
   border-radius: 65px;
-}
-
-.welcome .text-wrapper-10 {
-  position: absolute;
-  top: 46px;
-  left: 13px;
-  font-family: "Inter-Regular", Helvetica;
-  font-weight: 400;
-  color: #000000;
-  font-size: 20px;
-  letter-spacing: 0;
-  line-height: normal;
-  white-space: nowrap;
 }
 
 .welcome .overlap-2 {
@@ -244,6 +256,16 @@
   background-color: #d9d9d9;
   border-radius: 65px;
 }
+
+    .welcome .overlap-4 {
+        position: absolute;
+        width: 130px;
+        height: 130px;
+        top: 1570px;
+        left: 999px;
+        background-color: #d9d9d9;
+        border-radius: 65px;
+    }
 
 .welcome .text-wrapper-12 {
   position: absolute;
