@@ -1,0 +1,89 @@
+﻿@page
+@model ApexUI.Pages.ClientDashboardModel
+@{
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard</title>
+    <link rel="stylesheet" href="~/css/Clientcss/style.css">
+</head>
+<body>
+    <div class="TechnicianDashboard">
+        <div class="sidebar" id="sidebar">
+            <button class="menu-item" onclick="window.location.href='Welcome'">Home</button>
+            <button class="menu-item" onclick="window.location.href='ClientDashboard'">Dashboard</button>
+            <button class="menu-item" onclick="openAccountPopup()">Account</button>
+            <button class="menu-item">Privacy Policy</button>
+        </div>
+
+        <div class="container">
+            <header class="header">
+                <div class="menu-icon" onclick="toggleSidebar()">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>ApexSolutions</h1>
+            </header>
+
+            <div class="dashboard-title">
+                <h2>Client Dashboard</h2>
+            </div>
+
+            <div class="search-bar">
+                <label for="search">Search</label>
+                <input type="text" id="search">
+            </div>
+
+            <table class="service-table">
+                <tr>
+                    <th>Service Name</th>
+                    <th>Service ID</th>
+                    <th>Status</th>
+                    <th>Complete</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <button class="view-service-btn" onclick="window.location.href='CreateService'">Create Service</button>
+            <button class="view-service-btn" onclick="window.location.href='Service'">View Service</button>
+        </div>
+    </div>
+
+    <!-- Modal Container for Account Popup -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAccountPopup()">&times;</span>
+            <div id="accountContent"></div>
+        </div>
+    </div>
+
+    <script>
+                // Function to toggle the sidebar
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+          }
+
+          // Function to open the Account modal
+          function openAccountPopup() {
+            fetch('Account')
+              .then(response => response.text())
+              .then(data => {
+                document.getElementById("accountContent").innerHTML = data;
+                document.getElementById("accountModal").style.display = "block";
+              })
+              .catch(error => console.error("Error loading Account:", error));
+          }
+
+          // Function to close the Account modal
+          function closeAccountPopup() {
+            document.getElementById("accountModal").style.display = "none";
+          }
+    </script>
+</body>
