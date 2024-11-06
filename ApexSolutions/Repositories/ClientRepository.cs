@@ -7,7 +7,7 @@ using ApexSolutions.Interfaces;
 
 namespace ApexSolutions.Repositories
 {
-    public class ClientRepository : IRepository<Client>
+    public class ClientRepository : IClientRepository // Change here to implement IClientRepository
     {
         private readonly IDbConnection _dbConnection;
 
@@ -64,12 +64,11 @@ namespace ApexSolutions.Repositories
         }
 
         // Delete a client
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(Client client) // Change to match the interface method signature
         {
             var sql = "DeleteClient"; // Name of the stored procedure
-            var parameters = new { ClientID = id }; // Assuming the parameter is ClientID
-            var affectedRows = await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
-            return affectedRows > 0;
+            var parameters = new { ClientID = client.ClientID }; // Assuming the parameter is ClientID
+            await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

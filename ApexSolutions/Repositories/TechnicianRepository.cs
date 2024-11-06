@@ -7,7 +7,7 @@ using ApexSolutions.Interfaces;
 
 namespace ApexSolutions.Repositories
 {
-    public class TechnicianRepository : IRepository<Technician>
+    public class TechnicianRepository : ITechnicianRepository // Change here to implement ITechnicianRepository
     {
         private readonly IDbConnection _dbConnection;
 
@@ -63,8 +63,8 @@ namespace ApexSolutions.Repositories
             return technician;
         }
 
-        // Delete a technician
-        public async Task<bool> DeleteAsync(int id)
+        // Delete a technician by ID
+        public async Task<bool> DeleteAsync(int id) // Change to match the interface method signature
         {
             var sql = "DeleteTechnician"; // Name of the stored procedure
             var parameters = new { TechnicianID = id }; // Assuming the parameter is TechnicianID

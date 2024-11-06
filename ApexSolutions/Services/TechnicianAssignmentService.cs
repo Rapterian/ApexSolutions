@@ -120,8 +120,6 @@ namespace ApexSolutions.Services
             }
         }
 
-            var message = $"You have been assigned a new job. Job ID: {serviceRequestId}";
-            await _smsService.SendSmsAsync("your_api_token", contactNumber, "", message);
 
 
     }

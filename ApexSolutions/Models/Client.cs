@@ -35,6 +35,7 @@ namespace ApexSolutions.Models
         public bool IsKeyClient { get; set; } = false; // Default value
 
         // Constructor
+        public Client() { }
         public Client(string name, string email, string phoneNumber, string address)
         {
             Name = name;
