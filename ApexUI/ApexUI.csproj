@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\img\ApexSolutions-Logo.png" />
+    <None Include="wwwroot\img\Software-Technician.PNG" />
     <None Include="wwwroot\js\script.js" />
   </ItemGroup>
 
@@ -28,6 +30,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ApexSolutions\ApexSolutions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>
