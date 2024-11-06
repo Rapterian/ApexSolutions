@@ -3,7 +3,6 @@ using ApexSolutions.Repositories;
 using ApexSolutions.Services;
 using ApexSolutions.Data; // Add this for DatabaseContext
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(); // For API controllers
 builder.Services.AddRazorPages(); // For Razor Pages
 
-// Retrieve the connection string from the configuration
-var connectionString = builder.Configuration.GetConnectionString("ApexSolutionsDB");
-builder.Services.AddScoped<DatabaseContext>(provider => new DatabaseContext(connectionString));
+// Register HttpClient with a base address
+builder.Services.AddHttpClient("ClientAPI", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7117/"); // Change this to your API's base URL
+});
+
+// Register other services
+builder.Services.AddScoped<DatabaseContext>(provider =>
+    new DatabaseContext(builder.Configuration.GetConnectionString("ApexSolutionsDB")));
 builder.Services.AddScoped<IClientRepository, ClientRepository>(); // Register the repository
 builder.Services.AddScoped<ClientService>(); // Register ClientService
 

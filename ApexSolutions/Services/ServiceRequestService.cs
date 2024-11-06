@@ -9,47 +9,47 @@ using ApexSolutions.Repositories;
 
 namespace ApexSolutions.Services
 {
-    public class ServiceRequestService
+    public class ServiceRequestService : IServiceRequestService // Inherit from IServiceRequestService
     {
-        private readonly IRepository<ServiceRequest> _serviceRequestRepository;
+        private readonly IServiceRequestRepository _serviceRequestRepository; // Change this line
 
         // Constructor injection of the repository
-        public ServiceRequestService(IRepository<ServiceRequest> serviceRequestRepository)
+        public ServiceRequestService(IServiceRequestRepository serviceRequestRepository) // Change this line
         {
             _serviceRequestRepository = serviceRequestRepository ?? throw new ArgumentNullException(nameof(serviceRequestRepository), "Service request repository cannot be null");
         }
 
         // Get all service requests
-        public async Task<IEnumerable<ServiceRequestDTO>> GetAllServiceRequestsAsync()
+        public async Task<List<ServiceRequestDTO>> GetAllServiceRequestsAsync() // Change return type to List
         {
             try
             {
                 var serviceRequests = await _serviceRequestRepository.GetAllAsync();
-                return MapToDTO(serviceRequests);
+                return MapToDTO(serviceRequests).ToList(); // Convert to List
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching service requests: {ex.Message}");
-                return Enumerable.Empty<ServiceRequestDTO>();
+                return new List<ServiceRequestDTO>(); // Return empty list
             }
         }
 
         // Get a specific service request by ID
-        public async Task<ServiceRequestDTO> GetServiceRequestByIdAsync(int id)
+        public async Task<ServiceRequestDTO> GetServiceRequestByIdAsync(int serviceRequestId)
         {
-            if (id <= 0)
+            if (serviceRequestId <= 0)
             {
                 throw new ArgumentException("Invalid service request ID");
             }
 
             try
             {
-                var serviceRequest = await _serviceRequestRepository.GetByIdAsync(id);
+                var serviceRequest = await _serviceRequestRepository.GetByIdAsync(serviceRequestId);
                 return serviceRequest != null ? MapToDTO(serviceRequest) : null;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching service request with ID {id}: {ex.Message}");
+                Console.WriteLine($"Error fetching service request with ID {serviceRequestId}: {ex.Message}");
                 return null;
             }
         }
@@ -76,7 +76,7 @@ namespace ApexSolutions.Services
         }
 
         // Update an existing service request
-        public async Task<ServiceRequestDTO> UpdateServiceRequestAsync(int id, ServiceRequestDTO serviceRequestDto)
+        public async Task<ServiceRequestDTO> UpdateServiceRequestAsync(int serviceRequestId, ServiceRequestDTO serviceRequestDto)
         {
             if (serviceRequestDto == null)
             {
@@ -85,10 +85,10 @@ namespace ApexSolutions.Services
 
             try
             {
-                var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
+                var existingRequest = await _serviceRequestRepository.GetByIdAsync(serviceRequestId);
                 if (existingRequest == null)
                 {
-                    Console.WriteLine($"Service request with ID {id} not found");
+                    Console.WriteLine($"Service request with ID {serviceRequestId} not found");
                     return null;
                 }
 
@@ -103,25 +103,25 @@ namespace ApexSolutions.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error updating service request with ID {id}: {ex.Message}");
+                Console.WriteLine($"Error updating service request with ID {serviceRequestId}: {ex.Message}");
                 return null;
             }
         }
 
         // Delete a service request
-        public async Task<bool> DeleteServiceRequestAsync(int id)
+        public async Task<bool> DeleteServiceRequestAsync(int serviceRequestId)
         {
-            if (id <= 0)
+            if (serviceRequestId <= 0)
             {
                 throw new ArgumentException("Invalid service request ID");
             }
 
             try
             {
-                var existingRequest = await _serviceRequestRepository.GetByIdAsync(id);
+                var existingRequest = await _serviceRequestRepository.GetByIdAsync(serviceRequestId);
                 if (existingRequest == null)
                 {
-                    Console.WriteLine($"Service request with ID {id} not found");
+                    Console.WriteLine($"Service request with ID {serviceRequestId} not found");
                     return false;
                 }
 
@@ -130,7 +130,7 @@ namespace ApexSolutions.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting service request with ID {id}: {ex.Message}");
+                Console.WriteLine($"Error deleting service request with ID {serviceRequestId}: {ex.Message}");
                 return false;
             }
         }
