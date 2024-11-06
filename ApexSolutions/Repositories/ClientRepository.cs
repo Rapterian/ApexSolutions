@@ -4,16 +4,18 @@ using System.Threading.Tasks;
 using Dapper;
 using ApexSolutions.Models;
 using ApexSolutions.Interfaces;
+using ApexSolutions.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApexSolutions.Repositories
 {
-    public class ClientRepository : IRepository<Client>
+    public class ClientRepository : IClientRepository // Change here to implement IClientRepository
     {
-        private readonly IDbConnection _dbConnection;
+        private readonly DatabaseContext _dbContext;
 
-        public ClientRepository(IDbConnection dbConnection)
+        public ClientRepository(DatabaseContext dbContext)
         {
-            _dbConnection = dbConnection;
+            _dbContext = dbContext;
         }
 
         // Create a new client and return the new Client object with its ID
@@ -27,7 +29,7 @@ namespace ApexSolutions.Repositories
                 client.PhoneNumber, // Assuming this property exists in your Client model
                 client.Address
             };
-            var id = await _dbConnection.QuerySingleAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+            var id = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             client.ClientID = id; // Assuming Client has a ClientID property
             return client;
         }
@@ -36,7 +38,7 @@ namespace ApexSolutions.Repositories
         public async Task<IEnumerable<Client>> GetAllAsync()
         {
             var sql = "GetClients"; // Name of the stored procedure
-            return await _dbConnection.QueryAsync<Client>(sql, commandType: CommandType.StoredProcedure);
+            return await _dbContext.QueryAsync<Client>(sql, commandType: CommandType.StoredProcedure);
         }
 
         // Get a client by ID
@@ -44,7 +46,7 @@ namespace ApexSolutions.Repositories
         {
             var sql = "GetClientById"; // Assuming you have a stored procedure for this
             var parameters = new { ClientID = id }; // Assuming the parameter is ClientID
-            return await _dbConnection.QuerySingleOrDefaultAsync<Client>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return await _dbContext.QuerySingleOrDefaultAsync<Client>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
         // Update an existing client
@@ -59,17 +61,16 @@ namespace ApexSolutions.Repositories
                 client.PhoneNumber,
                 client.Address
             };
-            await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return client;
         }
 
         // Delete a client
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(Client client) // Change to match the interface method signature
         {
             var sql = "DeleteClient"; // Name of the stored procedure
-            var parameters = new { ClientID = id }; // Assuming the parameter is ClientID
-            var affectedRows = await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
-            return affectedRows > 0;
+            var parameters = new { ClientID = client.ClientID }; // Assuming the parameter is ClientID
+            await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
         }
     }
 }
