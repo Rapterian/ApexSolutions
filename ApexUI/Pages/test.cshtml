@@ -1,0 +1,11 @@
+﻿@page
+@model ApexUI.Pages.ClientsModel // Ensure this matches the class name
+
+<h1>Clients Page</h1>
+
+<ul>
+    @foreach (var client in Model.Clients)
+    {
+        <li>@client.ClientID</li> <!-- Assuming Client has a Name property -->
+    }
+</ul>

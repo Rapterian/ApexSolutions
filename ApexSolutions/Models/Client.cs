@@ -34,10 +34,8 @@ namespace ApexSolutions.Models
         // Optional: You can add additional properties as needed
         public bool IsKeyClient { get; set; } = false; // Default value
 
-        // Parameterless constructor for EF or other frameworks
-        public Client() { }
-
         // Constructor
+        public Client() { }
         public Client(string name, string email, string phoneNumber, string address)
         {
             Name = name;
