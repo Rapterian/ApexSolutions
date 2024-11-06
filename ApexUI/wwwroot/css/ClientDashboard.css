@@ -1,0 +1,15 @@
+﻿table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+button {
+    margin: 10px 5px;
+}
