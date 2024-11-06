@@ -144,6 +144,10 @@ namespace ApexSolutions.Services
             return new ClientDTO
             {
                 ClientID = client.ClientID,
+                Email=client.Email,
+                Name = client.Name,
+                Address = client.Address
+
             };
         }
 

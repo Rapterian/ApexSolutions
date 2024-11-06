@@ -1,0 +1,49 @@
+﻿@page
+@model ApexUI.Pages.ServiceRequestsModel
+@{
+    ViewData["Title"] = "Service Requests";
+}
+
+<h1>Service Requests</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Service Request ID</th>
+            <th>Client ID</th>
+            <th>Description</th>
+            <th>Service Type</th>
+            <th>Request Date</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ServiceRequests != null && Model.ServiceRequests.Any())
+        {
+            foreach (var request in Model.ServiceRequests)
+            {
+                <tr>
+                    <td>@request.ServiceRequestID</td>
+                    <td>@request.ClientID</td>
+                    <td>@request.Description</td>
+                    <td>@request.ServiceType</td>
+                    <td>@request.RequestDate.ToString("yyyy-MM-dd")</td>
+                    <td>@request.Status</td>
+                    <td>@request.PriorityLevel</td>
+                    <td>
+                        <a asp-page="/EditServiceRequest" asp-route-id="@request.ServiceRequestID">Edit</a> |
+                        <a asp-page="/DeleteServiceRequest" asp-route-id="@request.ServiceRequestID">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">No service requests found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
