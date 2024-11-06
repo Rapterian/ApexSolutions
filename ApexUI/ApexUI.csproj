@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\css\style.css" />
+    <Content Remove="wwwroot\js\script.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\js\script.js" />
   </ItemGroup>
 
   <ItemGroup>
