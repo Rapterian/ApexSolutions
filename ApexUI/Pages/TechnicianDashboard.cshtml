@@ -12,8 +12,8 @@
     <body>
         <div class="TechnicianDashboard">
             <div class="sidebar" id="sidebar">
-                <button class="menu-item" onclick="window.location.href='Welcome.html'">Home</button>
-                <button class="menu-item" onclick="window.location.href='TechnicianDashboard.html'">Dashboard</button>
+                <button class="menu-item" onclick="window.location.href='Welcome'">Home</button>
+                <button class="menu-item" onclick="window.location.href='TechnicianDashboard'">Dashboard</button>
                 <button class="menu-item" onclick="openAccountPopup()">Account</button>
                 <button class="menu-item">Privacy Policy</button>
             </div>
@@ -52,7 +52,7 @@
                     </tr>
                 </table>
 
-                <button class="view-service-btn" onclick="window.location.href='Service.html'">View Service</button>
+                <button class="view-service-btn" onclick="window.location.href='Service'">View Service</button>
             </div>
         </div>
 
@@ -64,7 +64,28 @@
             </div>
         </div>
 
-        <script src="script.js"></script>
+        <script>
+            function toggleSidebar() {
+                var sidebar = document.getElementById("sidebar");
+                sidebar.classList.toggle("active");
+                    }
+            // Function to open the Account modal
+            function openAccountPopup() {
+                fetch('Account')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("accountContent").innerHTML = data;
+                        document.getElementById("accountModal").style.display = "block";
+                    })
+                    .catch(error => console.error("Error loading Account.html:", error));
+            }
+
+            // Function to close the Account modal
+            function closeAccountPopup() {
+                document.getElementById("accountModal").style.display = "none";
+            }
+
+        </script>
     </body>
     </html>
 
