@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexSolutions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+        }
+        .modal-content {
+            background: linear-gradient(to bottom, #000000, #222222);
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            width: 300px; /* Could be more or less, depending on screen size */
+            color: #ffffff;
+        }
+        .close-btn {
+            color: #ffffff;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #f1f1f1;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        input[type="text"], textarea {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            background: #333333;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+        .rating {
+            display: flex;
+            justify-content: center;
+        }
+
+        .rating input[type="radio"] {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .rating label:hover,
+        .rating input:checked + label {
+            color: gold;
+        }
+        select{
+            height: 50px;
+            width: 90%;
+        }
+        #requestDate {
+            height: 50px;
+            width: 90%;
+        }
+        #location{
+            height: 50px;
+            width: 90%;
+        }
+        #description{
+            height: 50px;
+            width: 90%;
+        }
+        .button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.button-group button {
+    padding: 8px 16px;
+    background-color:#222222;
+    border: 1px solid #69A297;
+    color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-group button:hover {
+    background-color: #69A297;
+}
+    </style>
+</head>
+<body>
+    <div class="TechnicianDashboard">
+        <div class="sidebar" id="sidebar">
+            <button class="menu-item" onclick="window.location.href='Welcome.html'">Home</button>
+            <button class="menu-item" onclick="window.location.href='ClientDashboard.html'">Dashboard</button>
+            <button class="menu-item" onclick="openAccountPopup()">Account</button>
+            <button class="menu-item">Privacy Policy</button>
+        </div>
+        
+        <div class="container">
+            <header class="header">
+                <div class="menu-icon" onclick="toggleSidebar()">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>ApexSolutions</h1>
+            </header>
+            
+            <div class="dashboard-title">
+                <h2>Create Service</h2>
+            </div>
+            <form>
+                <label for="serviceType">Service Type:</label>
+                <select id="serviceType">
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    </select>
+    
+                <label for="requestDate">Request Date:</label>
+                <input type="date" id="requestDate">
+    
+                <label for="location">Location:</label>
+                <input type="text" id="location">
+    
+                <label for="description">Description:</label>
+                <textarea id="description"></textarea>   
+    
+    
+                <div class="button-group">
+                    <button type="submit">Create</button>
+                    <button type="reset" onclick="window.location.href='ClientDashboard.html'">Cancel</button>
+                </div>
+            </form>
+           
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        }
+
+        function openCompleteServiceModal() {
+            document.getElementById("completeServiceModal").style.display = "block";
+        }
+
+        function closeCompleteServiceModal() {
+            document.getElementById("completeServiceModal").style.display = "none";
+        }
+
+        function openFeedbackModal() {
+            document.getElementById("feedbackModal").style.display = "block";
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById("feedbackModal").style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            var completeModal = document.getElementById("completeServiceModal");
+            var feedbackModal = document.getElementById("feedbackModal");
+            if (event.target == completeModal) {
+                completeModal.style.display = "none";
+            } else if (event.target == feedbackModal) {
+                feedbackModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
