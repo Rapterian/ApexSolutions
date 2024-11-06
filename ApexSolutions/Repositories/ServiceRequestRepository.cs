@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Dapper;
 using ApexSolutions.Models;
 using ApexSolutions.Interfaces;
-using ApexSolutions.Repositories;
 using ApexSolutions.Data;
 
 namespace ApexSolutions.Repositories
@@ -18,7 +17,6 @@ namespace ApexSolutions.Repositories
             _dbContext = dbContext;
         }
 
-        // Create a new service request and return the new ServiceRequest object with its ID
         public async Task<ServiceRequest> AddAsync(ServiceRequest serviceRequest)
         {
             var sql = "InsertServiceRequest"; // Name of the stored procedure
@@ -39,46 +37,42 @@ namespace ApexSolutions.Repositories
             return serviceRequest;
         }
 
-        // Get all service requests
         public async Task<IEnumerable<ServiceRequest>> GetAllAsync()
         {
             var sql = "GetServiceRequests"; // Name of the stored procedure
             return await _dbContext.QueryAsync<ServiceRequest>(sql, commandType: CommandType.StoredProcedure);
         }
 
-        // Get a service request by ID
         public async Task<ServiceRequest> GetByIdAsync(int serviceRequestId)
         {
             var sql = "GetServiceRequestById"; // Assuming you have a stored procedure for this
-            var parameters = new { ServiceRequestID = serviceRequestId }; // Assuming the parameter is ServiceRequestID
+            var parameters = new { ServiceRequestID = serviceRequestId };
             return await _dbContext.QuerySingleOrDefaultAsync<ServiceRequest>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        // Update an existing service request
         public async Task<ServiceRequest> UpdateAsync(ServiceRequest serviceRequest)
         {
             var sql = "UpdateServiceRequest"; // Name of the stored procedure
             var parameters = new
             {
-                serviceRequest.ServiceRequestID, // Assuming ServiceRequest has a ServiceRequestID property
+                serviceRequest.ServiceRequestID,
                 serviceRequest.TechnicianID,
                 serviceRequest.Description,
                 serviceRequest.ServiceType,
                 serviceRequest.Status,
                 serviceRequest.Priority,
                 serviceRequest.EstimatedCompletionTime,
-                serviceRequest.ActualCompletionTime, // Assuming this property exists in your ServiceRequest model
+                serviceRequest.ActualCompletionTime,
                 serviceRequest.Location
             };
             await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return serviceRequest;
         }
 
-        // Delete a service request
         public async Task<bool> DeleteAsync(int serviceRequestId)
         {
             var sql = "DeleteServiceRequest"; // Name of the stored procedure
-            var parameters = new { ServiceRequestID = serviceRequestId }; // Assuming the parameter is ServiceRequestID
+            var parameters = new { ServiceRequestID = serviceRequestId };
             var affectedRows = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return affectedRows > 0;
         }
