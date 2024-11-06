@@ -5,16 +5,17 @@ using Dapper;
 using ApexSolutions.Models;
 using ApexSolutions.Interfaces;
 using ApexSolutions.Repositories;
+using ApexSolutions.Data;
 
 namespace ApexSolutions.Repositories
 {
     public class ServiceRequestRepository : IServiceRequestRepository
     {
-        private readonly IDbConnection _dbConnection;
+        private readonly DatabaseContext _dbContext;
 
-        public ServiceRequestRepository(IDbConnection dbConnection)
+        public ServiceRequestRepository(DatabaseContext dbContext)
         {
-            _dbConnection = dbConnection;
+            _dbContext = dbContext;
         }
 
         // Create a new service request and return the new ServiceRequest object with its ID
@@ -33,7 +34,7 @@ namespace ApexSolutions.Repositories
                 serviceRequest.EstimatedCompletionTime,
                 serviceRequest.Location
             };
-            var id = await _dbConnection.QuerySingleAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+            var id = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             serviceRequest.ServiceRequestID = id; // Assuming ServiceRequest has a ServiceRequestID property
             return serviceRequest;
         }
@@ -42,7 +43,7 @@ namespace ApexSolutions.Repositories
         public async Task<IEnumerable<ServiceRequest>> GetAllAsync()
         {
             var sql = "GetServiceRequests"; // Name of the stored procedure
-            return await _dbConnection.QueryAsync<ServiceRequest>(sql, commandType: CommandType.StoredProcedure);
+            return await _dbContext.QueryAsync<ServiceRequest>(sql, commandType: CommandType.StoredProcedure);
         }
 
         // Get a service request by ID
@@ -50,7 +51,7 @@ namespace ApexSolutions.Repositories
         {
             var sql = "GetServiceRequestById"; // Assuming you have a stored procedure for this
             var parameters = new { ServiceRequestID = serviceRequestId }; // Assuming the parameter is ServiceRequestID
-            return await _dbConnection.QuerySingleOrDefaultAsync<ServiceRequest>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return await _dbContext.QuerySingleOrDefaultAsync<ServiceRequest>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
         // Update an existing service request
@@ -69,7 +70,7 @@ namespace ApexSolutions.Repositories
                 serviceRequest.ActualCompletionTime, // Assuming this property exists in your ServiceRequest model
                 serviceRequest.Location
             };
-            await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return serviceRequest;
         }
 
@@ -78,7 +79,7 @@ namespace ApexSolutions.Repositories
         {
             var sql = "DeleteServiceRequest"; // Name of the stored procedure
             var parameters = new { ServiceRequestID = serviceRequestId }; // Assuming the parameter is ServiceRequestID
-            var affectedRows = await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            var affectedRows = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return affectedRows > 0;
         }
     }

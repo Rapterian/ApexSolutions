@@ -28,7 +28,7 @@ namespace ApexSolutions
             var dbContext = new DatabaseContext(connectionString);
 
             // Create a client
-            var client = new Client("John Doe", "johndoe@example.com", "0123456789", "123 Main St");
+            var client = new Client("John D", "joh@example.com", "0123456789", "123 Main St");
             client.ClientID=await dbContext.InsertClientAsync(client);
             Console.WriteLine("Client added successfully.");
             

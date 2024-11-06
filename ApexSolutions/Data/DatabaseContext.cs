@@ -3,6 +3,7 @@ using Dapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApexSolutions.Models;
+using System.Data;
 
 
 namespace ApexSolutions.Data
@@ -16,6 +17,33 @@ namespace ApexSolutions.Data
             _connectionString = connectionString;
         }
 
+        public async Task<int> ExecuteScalarAsync(string sql, object parameters = null, CommandType? commandType = null)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                return await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: commandType);
+            }
+        }
+
+        public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object parameters = null, CommandType? commandType = null)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                return await connection.QueryAsync<T>(sql, parameters, commandType: commandType);
+            }
+        }
+
+        public async Task<T> QuerySingleOrDefaultAsync<T>(string sql, object parameters = null, CommandType? commandType = null)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                return await connection.QuerySingleOrDefaultAsync<T>(sql, parameters, commandType: commandType);
+            }
+        }
+
         // Client Methods
         public async Task<IEnumerable<Client>> GetClientsAsync()
         {
@@ -23,6 +51,16 @@ namespace ApexSolutions.Data
             {
                 await connection.OpenAsync();
                 return await connection.QueryAsync<Client>("GetClients", commandType: System.Data.CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<Client> GetClientByIdAsync(int clientId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var parameters = new { ClientID = clientId };
+                return await connection.QuerySingleOrDefaultAsync<Client>("GetClientById", parameters, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
 
