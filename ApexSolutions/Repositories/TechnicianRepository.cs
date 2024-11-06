@@ -4,16 +4,17 @@ using System.Threading.Tasks;
 using Dapper;
 using ApexSolutions.Models;
 using ApexSolutions.Interfaces;
+using ApexSolutions.Data;
 
 namespace ApexSolutions.Repositories
 {
     public class TechnicianRepository : ITechnicianRepository // Change here to implement ITechnicianRepository
     {
-        private readonly IDbConnection _dbConnection;
+        private readonly DatabaseContext _dbContext;
 
-        public TechnicianRepository(IDbConnection dbConnection)
+        public TechnicianRepository(DatabaseContext dbContext)
         {
-            _dbConnection = dbConnection;
+            _dbContext = dbContext;
         }
 
         // Create a new technician and return the new Technician object with its ID
@@ -27,7 +28,7 @@ namespace ApexSolutions.Repositories
                 technician.AvailabilityStatus,
                 technician.AssignedRequestIDs
             };
-            var id = await _dbConnection.QuerySingleAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+            var id = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             technician.TechnicianID = id; // Assuming Technician has a TechnicianID property
             return technician;
         }
@@ -36,7 +37,7 @@ namespace ApexSolutions.Repositories
         public async Task<IEnumerable<Technician>> GetAllAsync()
         {
             var sql = "GetTechnicians"; // Name of the stored procedure
-            return await _dbConnection.QueryAsync<Technician>(sql, commandType: CommandType.StoredProcedure);
+            return await _dbContext.QueryAsync<Technician>(sql, commandType: CommandType.StoredProcedure);
         }
 
         // Get a technician by ID
@@ -44,7 +45,7 @@ namespace ApexSolutions.Repositories
         {
             var sql = "GetTechnicianById"; // Assuming you have a stored procedure for this
             var parameters = new { TechnicianID = id }; // Assuming the parameter is TechnicianID
-            return await _dbConnection.QuerySingleOrDefaultAsync<Technician>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return await _dbContext.QuerySingleOrDefaultAsync<Technician>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
         // Update an existing technician
@@ -59,7 +60,7 @@ namespace ApexSolutions.Repositories
                 technician.AvailabilityStatus,
                 technician.AssignedRequestIDs
             };
-            await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return technician;
         }
 
@@ -68,7 +69,7 @@ namespace ApexSolutions.Repositories
         {
             var sql = "DeleteTechnician"; // Name of the stored procedure
             var parameters = new { TechnicianID = id }; // Assuming the parameter is TechnicianID
-            var affectedRows = await _dbConnection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            var affectedRows = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return affectedRows > 0;
         }
     }
