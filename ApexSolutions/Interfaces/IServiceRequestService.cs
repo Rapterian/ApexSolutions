@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ApexSolutions.Services
+namespace ApexSolutions.Interfaces
 {
     public interface IServiceRequestService
     {

@@ -1,61 +1,83 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApexSolutions.Models
 {
+    [Table("ServiceRequest")] // Specify the table name
     public class ServiceRequest
     {
-        // Fields
-        private int requestID;
-        private int clientID;
-        private string issueDetails;
-        private string priorityLevel;
-        private string status;
-        private int assignedTechnicianID;
-        private DateTime creationTimestamp;
-        private DateTime? resolutionTimestamp;
-
         // Properties
-        public int RequestID { get => requestID; set => requestID = value; }
-        public int ClientID { get => clientID; set => clientID = value; }
-        public string IssueDetails { get => issueDetails; set => issueDetails = value; }
-        public string PriorityLevel { get => priorityLevel; set => priorityLevel = value; }
-        public string Status { get => status; set => status = value; }
-        public int AssignedTechnicianID { get => assignedTechnicianID; set => assignedTechnicianID = value; }
-        public DateTime CreationTimestamp { get => creationTimestamp; }
-        public DateTime? ResolutionTimestamp { get => resolutionTimestamp; set => resolutionTimestamp = value; }
+        [Key] // Marks this property as the primary key
+        public int ServiceRequestID { get; set; }
+
+        [ForeignKey("Client")] // Specify the foreign key relationship
+        public int? ClientID { get; set; } // Nullable to allow for unassigned requests
+
+        [ForeignKey("Technician")] // Specify the foreign key relationship
+        public int? TechnicianID { get; set; } // Nullable to allow for unassigned requests
+
+        [Required] // Indicates that this field is required
+        public string Description { get; set; }
+
+        [Required] // Indicates that this field is required
+        [MaxLength(50)] // Specifies a maximum length for the string
+        public string ServiceType { get; set; }
+
+        [Required] // Indicates that this field is required
+        public DateTime RequestDate { get; set; }
+
+        [Required] // Indicates that this field is required
+        public string Status { get; set; }
+
+        [Required] // Indicates that this field is required
+        public string Priority { get; set; }
+
+        public DateTime? EstimatedCompletionTime { get; set; } // Nullable
+
+        public DateTime? ActualCompletionTime { get; set; } // Nullable
+
+        [Required] // Indicates that this field is required
+        public string Location { get; set; }
+
+        public string ClientFeedback { get; set; } // Nullable
+
+        public int? Rating { get; set; } // Nullable
+
+        public string TechnicianFeedback { get; set; } // Nullable
+
+        // Parameterless constructor for EF or other frameworks
+        public ServiceRequest() { }
 
         // Constructor
-        public ServiceRequest(int requestId, int clientId, string issueDetails, string priorityLevel)
+        public ServiceRequest(int clientId, string description, string serviceType, DateTime requestDate, string status, string priority, string location)
         {
-            requestID = requestId;
-            clientID = clientId;
-            this.issueDetails = issueDetails;
-            this.priorityLevel = priorityLevel;
-            status = "Open"; // default status
-            creationTimestamp = DateTime.Now;
+            ClientID = clientId;
+            Description = description;
+            ServiceType = serviceType;
+            RequestDate = requestDate;
+            Status = status;
+            Priority = priority;
+            Location = location;
         }
 
-        // Methods (Stubs)
+        // Methods
         public void AssignTechnician(int technicianID)
         {
-            assignedTechnicianID = technicianID;
-            status = "Assigned";
+            TechnicianID = technicianID;
+            Status = "Assigned";
         }
 
         public void CloseRequest()
         {
-            status = "Closed";
-            resolutionTimestamp = DateTime.Now;
+            Status = "Closed";
+            ActualCompletionTime = DateTime.Now; // Set actual completion time when closing
         }
 
         public void EscalateRequest()
         {
-            priorityLevel = "High";
-            status = "Escalated";
+            Priority = "High";
+            Status = "Escalated";
         }
     }
 }
