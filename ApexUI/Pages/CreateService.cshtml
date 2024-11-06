@@ -1,0 +1,230 @@
+﻿@page
+@model ApexUI.Pages.CreateServiceModel
+@{
+}
+<head>
+    <link rel="stylesheet" href="~/css/Clientcss/style.css">
+</head>
+<body>
+    <div class="TechnicianDashboard">
+        <div class="sidebar" id="sidebar">
+            <button class="menu-item" onclick="window.location.href='Welcome'">Home</button>
+            <button class="menu-item" onclick="window.location.href='ClientDashboard'">Dashboard</button>
+            <button class="menu-item" onclick="openAccountPopup()">Account</button>
+            <button class="menu-item">Privacy Policy</button>
+        </div>
+
+        <div class="container">
+            <header class="header">
+                <div class="menu-icon" onclick="toggleSidebar()">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>ApexSolutions</h1>
+            </header>
+
+            <div class="dashboard-title">
+                <h2>Create Service</h2>
+            </div>
+            <form>
+                <label for="serviceType">Service Type:</label>
+                <select id="serviceType">
+                    <option value="option1">Select Option</option>
+                    <option value="option2">Normal</option>
+                    <option value="option3">Urgent</option>
+                </select>
+
+                <label for="requestDate">Request Date:</label>
+                <input type="date" id="requestDate">
+
+                <label for="location">Location:</label>
+                <input type="text" id="location">
+
+                <label for="description">Description:</label>
+                <textarea id="description"></textarea>
+
+
+                <div class="button-group">
+                    <button type="submit">Create</button>
+                    <button type="reset" onclick="window.location.href='ClientDashboard'">Cancel</button>
+                </div>
+            </form>
+
+        </div>
+        <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAccountPopup()">&times;</span>
+            <div id="accountContent"></div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+<style>
+    /* Modal Styles */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1000; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        background: linear-gradient(to bottom, #000000, #222222);
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #ffffff;
+        border-radius: 10px;
+        width: 300px; /* Could be more or less, depending on screen size */
+        color: #ffffff;
+    }
+
+    .close-btn {
+        color: #ffffff;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #f1f1f1;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    input[type="text"], textarea {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: none;
+        background: #333333;
+        color: #ffffff;
+        border-radius: 5px;
+    }
+
+    .rating {
+        display: flex;
+        justify-content: center;
+    }
+
+        .rating input[type="radio"] {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+            .rating label:hover,
+            .rating input:checked + label {
+                color: gold;
+            }
+
+    select {
+        height: 50px;
+        width: 90%;
+    }
+
+    #requestDate {
+        height: 50px;
+        width: 90%;
+    }
+
+    #location {
+        height: 50px;
+        width: 90%;
+    }
+
+    #description {
+        height: 50px;
+        width: 90%;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+        .button-group button {
+            padding: 8px 16px;
+            background-color: #222222;
+            border: 1px solid #69A297;
+            color: #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .button-group button:hover {
+                background-color: #69A297;
+            }
+</style>
+
+
+
+<script src="~/js/Clientjs/script.js"></script>
+<script>
+    function toggleSidebar() {
+        var sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("active");
+    }
+
+    function openCompleteServiceModal() {
+        document.getElementById("completeServiceModal").style.display = "block";
+    }
+
+    function closeCompleteServiceModal() {
+        document.getElementById("completeServiceModal").style.display = "none";
+    }
+
+    function openFeedbackModal() {
+        document.getElementById("feedbackModal").style.display = "block";
+    }
+
+    function closeFeedbackModal() {
+        document.getElementById("feedbackModal").style.display = "none";
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        var completeModal = document.getElementById("completeServiceModal");
+        var feedbackModal = document.getElementById("feedbackModal");
+        if (event.target == completeModal) {
+            completeModal.style.display = "none";
+        } else if (event.target == feedbackModal) {
+            feedbackModal.style.display = "none";
+        }
+    }
+
+        // Function to open the Account modal
+              function openAccountPopup() {
+                fetch('Account')
+                  .then(response => response.text())
+                  .then(data => {
+                    document.getElementById("accountContent").innerHTML = data;
+                    document.getElementById("accountModal").style.display = "block";
+                  })
+                  .catch(error => console.error("Error loading Account:", error));
+              }
+
+        function toggleSidebar() {
+                var sidebar = document.getElementById("sidebar");
+                sidebar.classList.toggle("active");
+              }
+
+              // Function to close the Account modal
+              function closeAccountPopup() {
+                document.getElementById("accountModal").style.display = "none";
+              }
+
+</script>
