@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ApexSolutions.DTOs; // Assuming you have a DTO for ServiceRequest
-using ApexSolutions.Services; // Assuming the ServiceRequestService is in this namespace
+using ApexSolutions.DTOs;
+using ApexSolutions.Services;
 using System.Threading.Tasks;
 
 namespace ApexSolutions.Controllers

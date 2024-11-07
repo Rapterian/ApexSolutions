@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApexSolutions.Repositories
 {
-    public class ClientRepository : IClientRepository // Change here to implement IClientRepository
+    public class ClientRepository : IClientRepository
     {
         private readonly DatabaseContext _dbContext;
 
@@ -26,11 +26,11 @@ namespace ApexSolutions.Repositories
             {
                 client.Name,
                 client.Email,
-                client.PhoneNumber, // Assuming this property exists in your Client model
+                client.PhoneNumber,
                 client.Address
             };
             var id = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
-            client.ClientID = id; // Assuming Client has a ClientID property
+            client.ClientID = id;
             return client;
         }
 
@@ -44,8 +44,8 @@ namespace ApexSolutions.Repositories
         // Get a client by ID
         public async Task<Client> GetByIdAsync(int id)
         {
-            var sql = "GetClientById"; // Assuming you have a stored procedure for this
-            var parameters = new { ClientID = id }; // Assuming the parameter is ClientID
+            var sql = "GetClientById";
+            var parameters = new { ClientID = id };
             return await _dbContext.QuerySingleOrDefaultAsync<Client>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
@@ -55,7 +55,7 @@ namespace ApexSolutions.Repositories
             var sql = "UpdateClient"; // Name of the stored procedure
             var parameters = new
             {
-                client.ClientID, // Assuming Client has a ClientID property
+                client.ClientID, 
                 client.Name,
                 client.Email,
                 client.PhoneNumber,
@@ -66,10 +66,10 @@ namespace ApexSolutions.Repositories
         }
 
         // Delete a client
-        public async Task DeleteAsync(Client client) // Change to match the interface method signature
+        public async Task DeleteAsync(Client client)
         {
             var sql = "DeleteClient"; // Name of the stored procedure
-            var parameters = new { ClientID = client.ClientID }; // Assuming the parameter is ClientID
+            var parameters = new { ClientID = client.ClientID };
             await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
         }
     }

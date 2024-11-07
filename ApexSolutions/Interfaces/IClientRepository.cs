@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ApexSolutions.Models; // Adjust this namespace according to your project structure
+using ApexSolutions.Models;
 
 namespace ApexSolutions.Interfaces
 {

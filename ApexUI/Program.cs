@@ -1,7 +1,7 @@
 using ApexSolutions.Interfaces;
 using ApexSolutions.Repositories;
 using ApexSolutions.Services;
-using ApexSolutions.Data; // Add this for DatabaseContext
+using ApexSolutions.Data;
 using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +13,7 @@ builder.Services.AddRazorPages(); // For Razor Pages
 // Register HttpClient with a base address
 builder.Services.AddHttpClient("ClientAPI", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7117/"); // Change this to your API's base URL
+    client.BaseAddress = new Uri("https://localhost:7117/");
 });
 
 // Register other services

@@ -41,7 +41,7 @@ namespace ApexCare.Utils
         private void Log(string level, string message)
         {
             var logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} [{level}] {message}";
-            Console.WriteLine(logEntry); // Optional: output to console
+            Console.WriteLine(logEntry);
 
             // Append log entry to the file
             using (var writer = new StreamWriter(_logFilePath, true))
