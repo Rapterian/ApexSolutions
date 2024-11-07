@@ -4,7 +4,7 @@ namespace ApexSolutions.DTOs
 {
     public class TechnicianDTO
     {
-        public int TechnicianID { get; set; } // Optional: Include this if you want to return the ID after creation
+        public int TechnicianID { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
         [MaxLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
@@ -17,9 +17,8 @@ namespace ApexSolutions.DTOs
         [Required(ErrorMessage = "Availability status is required.")]
         public bool AvailabilityStatus { get; set; } = true; // Default to true (available)
 
-        public string AssignedRequestIDs { get; set; } // Optional: Can hold a comma-separated list of request IDs
+        public string AssignedRequestIDs { get; set; }
 
-        // Optional: Add a property for contact number if needed
         [MaxLength(15, ErrorMessage = "Contact number cannot exceed 15 characters.")]
         public string ContactNumber { get; set; }
     }

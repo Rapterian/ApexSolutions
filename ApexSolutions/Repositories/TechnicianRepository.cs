@@ -8,7 +8,7 @@ using ApexSolutions.Data;
 
 namespace ApexSolutions.Repositories
 {
-    public class TechnicianRepository : ITechnicianRepository // Change here to implement ITechnicianRepository
+    public class TechnicianRepository : ITechnicianRepository
     {
         private readonly DatabaseContext _dbContext;
 
@@ -29,7 +29,7 @@ namespace ApexSolutions.Repositories
                 technician.AssignedRequestIDs
             };
             var id = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
-            technician.TechnicianID = id; // Assuming Technician has a TechnicianID property
+            technician.TechnicianID = id;
             return technician;
         }
 
@@ -43,8 +43,8 @@ namespace ApexSolutions.Repositories
         // Get a technician by ID
         public async Task<Technician> GetByIdAsync(int id)
         {
-            var sql = "GetTechnicianById"; // Assuming you have a stored procedure for this
-            var parameters = new { TechnicianID = id }; // Assuming the parameter is TechnicianID
+            var sql = "GetTechnicianById";
+            var parameters = new { TechnicianID = id };
             return await _dbContext.QuerySingleOrDefaultAsync<Technician>(sql, parameters, commandType: CommandType.StoredProcedure);
         }
 
@@ -54,7 +54,7 @@ namespace ApexSolutions.Repositories
             var sql = "UpdateTechnician"; // Name of the stored procedure
             var parameters = new
             {
-                technician.TechnicianID, // Assuming Technician has a TechnicianID property
+                technician.TechnicianID,
                 technician.Name,
                 technician.Skills,
                 technician.AvailabilityStatus,
@@ -65,10 +65,10 @@ namespace ApexSolutions.Repositories
         }
 
         // Delete a technician by ID
-        public async Task<bool> DeleteAsync(int id) // Change to match the interface method signature
+        public async Task<bool> DeleteAsync(int id)
         {
             var sql = "DeleteTechnician"; // Name of the stored procedure
-            var parameters = new { TechnicianID = id }; // Assuming the parameter is TechnicianID
+            var parameters = new { TechnicianID = id };
             var affectedRows = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
             return affectedRows > 0;
         }

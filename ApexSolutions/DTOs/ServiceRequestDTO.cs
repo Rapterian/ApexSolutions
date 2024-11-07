@@ -12,8 +12,7 @@ namespace ApexSolutions.DTOs
         public string Status { get; set; } // Current status of the service request (e.g., Open, In Progress, Closed)
         public string PriorityLevel { get; set; } // Priority level of the request (e.g., Low, Medium, High)
 
-        // Additional properties can be added as needed
-        // public int? AssignedTechnicianID { get; set; } // Optional: ID of the technician assigned to the request
-        // public DateTime? ResolutionTimestamp { get; set; } // Optional: Timestamp for when the request was resolved
+        // public int? AssignedTechnicianID { get; set; } // This is optional, only if we want the ID of the technician assigned to the request
+        // public DateTime? ResolutionTimestamp { get; set; } // This is optional, only if we want the timestamp for when the request was resolved
     }
 }
