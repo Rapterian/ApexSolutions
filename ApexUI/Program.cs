@@ -49,6 +49,6 @@ app.MapControllers();
 app.MapRazorPages();
 
 // Set the default route to your test page
-app.MapGet("/", () => Results.Redirect("/test")); // Redirect root URL to /test
+app.MapGet("/", () => Results.Redirect("/Welcome")); // Redirect root URL to welcome page
 
 app.Run();
