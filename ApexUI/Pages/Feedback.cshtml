@@ -1,0 +1,78 @@
+﻿@page
+@model ApexUI.Pages.FeedbackModel
+@{
+}
+<body>
+
+    <div class="container">
+        <h1>Service</h1>
+        <h2>Service Name</h2>
+        <p>Please Provide feedback</p>
+        <div class="rating">
+            <input type="radio" id="star5" name="rating" value="5">
+            <label for="star5">&#9733;</label>
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4">&#9733;</label>
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3">&#9733;</label>
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2">&#9733;</label>
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1">&#9733;</label>
+        </div>
+        <input type="text" placeholder="Feedback" />
+        <button>Cancel</button>
+        <button>Submit</button>
+    </div>
+
+</body>
+
+
+<style>
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: sans-serif;
+    }
+    .container {
+      width: 300px;
+      height: auto ;
+      background: linear-gradient(to bottom, #000000, #222222);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px #000000;
+      margin: 50px auto;
+      border: #ffffff solid 1px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      background: #333333;
+      color: #ffffff;
+      border-radius: 5px;
+    }
+    .rating {
+      display: flex;
+      justify-content: center;
+    }
+
+    .rating input[type="radio"] {
+      display: none;
+    }
+
+    .rating label {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .rating label:hover,
+    .rating input:checked + label {
+      color: gold;
+    }
+</style>

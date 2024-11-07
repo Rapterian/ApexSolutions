@@ -83,10 +83,8 @@ namespace ApexSolutions.Data
                         client.Address
                     };
 
-                    // Assuming you have an UpdateClient stored procedure
                     await connection.ExecuteAsync("UpdateClient", updateParameters, commandType: System.Data.CommandType.StoredProcedure);
 
-                    // You might want to return the existing ClientID here
                     var existingClientId = await connection.QuerySingleAsync<int>(
                         "SELECT ClientID FROM Client WHERE Email = @Email", new { Email = client.Email });
                     return existingClientId; // Return the existing ClientID

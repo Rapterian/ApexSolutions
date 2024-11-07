@@ -25,7 +25,6 @@ namespace ApexSolutions.Models
 
         public string AssignedRequestIDs { get; set; } // This will hold a comma-separated list of request IDs
 
-        // Optional: Add a property for contact number if needed
         public string ContactNumber { get; set; }
 
         // Parameterless constructor for EF or other frameworks

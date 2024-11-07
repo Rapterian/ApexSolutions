@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApexSolutions.Models
 {
-    [Table("Client")] // Specify the table name
+    [Table("Client")] // The table name
     public class Client
     {
         // Properties
