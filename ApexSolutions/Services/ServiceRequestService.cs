@@ -11,16 +11,16 @@ namespace ApexSolutions.Services
 {
     public class ServiceRequestService : IServiceRequestService // Inherit from IServiceRequestService
     {
-        private readonly IServiceRequestRepository _serviceRequestRepository; // Change this line
+        private readonly IServiceRequestRepository _serviceRequestRepository;
 
         // Constructor injection of the repository
-        public ServiceRequestService(IServiceRequestRepository serviceRequestRepository) // Change this line
+        public ServiceRequestService(IServiceRequestRepository serviceRequestRepository)
         {
             _serviceRequestRepository = serviceRequestRepository ?? throw new ArgumentNullException(nameof(serviceRequestRepository), "Service request repository cannot be null");
         }
 
         // Get all service requests
-        public async Task<List<ServiceRequestDTO>> GetAllServiceRequestsAsync() // Change return type to List
+        public async Task<List<ServiceRequestDTO>> GetAllServiceRequestsAsync()
         {
             try
             {

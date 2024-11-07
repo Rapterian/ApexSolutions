@@ -4,7 +4,6 @@ namespace ApexSolutions.DTOs
 {
     public class ClientDTO
     {
-        // Assuming ClientID is an auto-generated property
         public int ClientID { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
@@ -16,8 +15,6 @@ namespace ApexSolutions.DTOs
         [StringLength(255, ErrorMessage = "Email cannot be longer than 255 characters.")]
         public string Email { get; set; }
 
-        // Add other properties as necessary
-        // For example:
         [StringLength(15, ErrorMessage = "Phone number cannot be longer than 15 characters.")]
         public string PhoneNumber { get; set; }
 

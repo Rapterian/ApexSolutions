@@ -7,6 +7,78 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" href="globals.css" />
         <link rel="stylesheet" href="/css/style.css" />
+        <style>
+            .welcome {
+                font-family: Arial, sans-serif;
+                color: #fff;
+                text-align: left;
+            }
+
+            .div {
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .text-wrapper-2, .text-wrapper-4, .text-wrapper-5 {
+                margin-left: 0; /* Align headings */
+            }
+
+            .text-wrapper-6 {
+                margin-top: 75px;
+            }
+
+            .p {
+                margin-left: 0; /* Align "Description of what the program does" */
+                font-size: 18px;
+                font-weight: bold;
+                margin-top: 75px;
+            }
+
+            .icon {
+                object-fit: contain;
+                border-radius: 30px;
+            }
+
+            .step-icon {
+                width: 130px;
+                height: 130px;
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            }
+
+                .step-icon:hover {
+                    transform: scale(1.1);
+                }
+
+            .line {
+                margin: 20px 0;
+                width: 100%;
+                border-top: 1px solid #ccc; /* Line style */
+            }
+
+            .banner-image {
+                max-width: 800px;
+                height: auto;
+                display: block;
+                margin: 0 auto 20px;
+                padding-bottom: 10px;
+            }
+
+            .divider-1 {
+                margin: 20px 0;
+                border-top: 1px solid #ccc;
+                width: 100%;
+                margin-top: 160px;
+            }
+
+            .divider-2 {
+                margin: 20px 0;
+                border-top: 1px solid #ccc;
+                width: 100%;
+                margin-top: 400px;
+            }
+
+        </style>
     </head>
     <body>
         <div class="welcome">
@@ -15,35 +87,91 @@
                     <div class="text-wrapper"><a href="Login" class="login-button">Log In / Register</a></div>
                     <div class="text-wrapper-2">ApexSolutions</div>
                 </div>
-                <img class="line" src="img/line-67.svg" />
-                <img class="img" src="img/line-68.svg" />
-                <img class="line-2" src="img/line-69.svg" />
+
+                <!-- Banner Image -->
+                <img src="img/ApexSolutions-Logo.png" alt="Banner" class="banner-image" />
                 <p class="p">Description of what the program does</p>
-                <div class="text-wrapper-3">Banner</div>
-                <div class="text-wrapper-4">Description of our technicians</div>
-                <div class="text-wrapper-5">Description of our technicians</div>
                 <p class="text-wrapper-6">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis velit vitae orci pharetra pulvinar.
-                    Cras vestibulum, metus non tincidunt sollicitudin, ligula urna posuere arcu, sit amet ultrices lacus nisl eget
-                    sapien. Duis facilisis dolor at nulla consequat volutpat. Aliquam erat
+                    ApexSolutions is your trusted partner for professional technical support,
+                    offering a range of services designed to keep your technology running smoothly.
+                    Our skilled technicians are here to help with setup, troubleshooting, and maintenance.
                 </p>
+                <div class="divider-1"></div>
+                <div class="divider-2"></div>
+                <!-- Program description -->
+                <!-- Description of Technicians Section -->
+                <div class="text-wrapper-4">Description of our technicians </div>
+                <div class="text-wrapper-5">Trust the process</div>
+
                 <p class="text-wrapper-7">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis velit vitae orci pharetra pulvinar.
-                    Cras vestibulum, metus non tincidunt sollicitudin, ligula urna posuere arcu, sit amet ultrices lacus nisl eget
-                    sapien. Duis facilisis dolor at nulla consequat volutpat. Aliquam erat
+                    Our team of certified technicians is highly trained to assist with all your technical
+                    needs, ensuring top-notch service every step of the way. Each technician specializes
+                    in a different area, from network setup to software optimization, and we take pride
+                    in offering personalized solutions.
                 </p>
-                <p class="text-wrapper-8">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis velit vitae orci pharetra pulvinar.
-                    Cras vestibulum, metus non tincidunt sollicitudin, ligula urna posuere arcu, sit amet ultrices lacus nisl eget
-                    sapien. Duis facilisis dolor at nulla consequat volutpat. Aliquam erat
-                </p>
-                <div class="overlap"><div class="text-wrapper-9">Technician icon</div></div>
-                <div class="div-wrapper"><div class="text-wrapper-10">Step 1 icon</div></div>
-                <div class="overlap-2"><div class="text-wrapper-11">Step 2 icon</div></div>
-                <div class="overlap-3"><div class="text-wrapper-10">Step 3 icon</div></div>
-                <div class="text-wrapper-12">Step 1 Heading</div>
-                <div class="text-wrapper-13">Step 2 Heading</div>
-                <div class="text-wrapper-14">Step 3 Heading</div>
+
+                <!-- Technician Icon -->
+                <div class="overlap">
+                    <img src="img/Software-Technician.PNG" alt="Technician Icon" class="icon" />
+                </div>
+
+                
+
+                <!-- Steps with Icons and Headings as Links -->
+                <div class="div-wrapper">
+                    <a href="Login">
+                        <img src="~/img/Step-1.png" alt="Step 1 Icon" class="step-icon" />
+                        <div class="text-wrapper-12">Step 1 Heading</div>
+                    </a>
+                </div>
+
+                <div class="overlap-2">
+                    <a href="CreateService">
+                        <img src="~/img/Service-Request.png" alt="Step 2 Icon" class="step-icon" style="border-radius:100px" />
+                        <div class="text-wrapper-13">Step 2 Heading</div>
+                    </a>
+                </div>
+
+                <div class="overlap-3">
+                    <a href="ViewService">
+                        <img src="~/img/View-Service.png" alt="Step 3 Icon" class="step-icon" />
+                        <div class="text-wrapper-14">Step 3 Heading</div>
+                    </a>
+                </div>
+
+                <div class="overlap-4">
+                    <a href="Feedback">
+                        <img src="~/img/Feedback.png" alt="Step 4 Icon" class="step-icon" style="border-radius:100px" />
+                        <div class="text-wrapper-14">Step 4 Heading</div>
+                    </a>
+                </div>
+
+                <!-- Additional Section Text -->
+                <div>
+                    <p class="text-wrapper-8">
+                        Step 1: Login into your account. If you do not have one, no worries! Simply navigate
+                        to the register page and create one.
+                    </p>
+                </div>
+                <br />
+                <div>
+                    <p class="text-wrapper-9">
+                        Step 2: Create a new Service Request and one of our qualified technicians will work
+                        on your problem promptly.
+                    </p>
+                </div>
+                <div>
+                    <p class="text-wrapper-10">
+                        Step 3: View your request via the View Request page. From there you can check the
+                        status and severity of your request.
+                    </p>
+                </div>
+                <div>
+                    <p class="text-wrapper-30">
+                        Step 4: Leave your feedback. Any and all feedback is welcome and taken into consideration.
+                    </p>
+                </div>
+
             </div>
         </div>
     </body>

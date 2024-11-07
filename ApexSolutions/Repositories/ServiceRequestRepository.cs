@@ -33,7 +33,7 @@ namespace ApexSolutions.Repositories
                 serviceRequest.Location
             };
             var id = await _dbContext.ExecuteScalarAsync(sql, parameters, CommandType.StoredProcedure);
-            serviceRequest.ServiceRequestID = id; // Assuming ServiceRequest has a ServiceRequestID property
+            serviceRequest.ServiceRequestID = id;
             return serviceRequest;
         }
 
@@ -45,7 +45,7 @@ namespace ApexSolutions.Repositories
 
         public async Task<ServiceRequest> GetByIdAsync(int serviceRequestId)
         {
-            var sql = "GetServiceRequestById"; // Assuming you have a stored procedure for this
+            var sql = "GetServiceRequestById";
             var parameters = new { ServiceRequestID = serviceRequestId };
             return await _dbContext.QuerySingleOrDefaultAsync<ServiceRequest>(sql, parameters, commandType: CommandType.StoredProcedure);
         }

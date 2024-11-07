@@ -91,7 +91,7 @@ namespace ApexSolutions.Services
 
                 // Filter available technicians based on business logic
                 var availableTechnicians = technicians
-                    .Where(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.Priority)) // Example logic
+                    .Where(t => t.IsAvailable() && t.Skills.Contains(serviceRequest.Priority))
                     .ToList();
 
                 return availableTechnicians;

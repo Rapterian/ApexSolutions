@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ApexSolutions.DTOs; // Assuming you have a DTO for Technician
-using ApexSolutions.Services; // Assuming the TechnicianService and TechnicianAssignmentService are in this namespace
+using ApexSolutions.DTOs;
+using ApexSolutions.Services;
 using System.Threading.Tasks;
 
 namespace ApexSolutions.Controllers
